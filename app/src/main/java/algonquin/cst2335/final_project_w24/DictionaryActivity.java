@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class DictionaryActivity extends AppCompatActivity {
+import algonquin.cst2335.final_project_w24.databinding.ActivityDictionaryBinding;
 
+public class DictionaryActivity extends AppCompatActivity {
+    ActivityDictionaryBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dictionary);
+
+        binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 }
