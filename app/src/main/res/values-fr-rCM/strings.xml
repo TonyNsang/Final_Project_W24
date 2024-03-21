@@ -8,4 +8,5 @@
     <string name="app3_name">Dictionaire</string>
     <string name="app4_name">Deezer Son</string>
     <string name="introduce_message">Bienvenue! Veuillez choisir votre point d\'action</string>
+    <string name="error_msg">Erreur lors de la récupération des définitions</string>
 </resources>

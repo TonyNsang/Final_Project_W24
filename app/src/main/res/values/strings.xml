@@ -7,4 +7,5 @@
     <string name="app3_name">Dictionary</string>
     <string name="app4_name">Deezer Song</string>
     <string name="introduce_message">WELCOME! \n Please choose your point of action</string>
+    <string name="error_msg">Error fetching definitions</string>
 </resources>
