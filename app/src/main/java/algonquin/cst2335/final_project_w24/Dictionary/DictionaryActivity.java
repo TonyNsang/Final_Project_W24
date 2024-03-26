@@ -1,12 +1,17 @@
-package algonquin.cst2335.final_project_w24;
+package algonquin.cst2335.final_project_w24.Dictionary;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -61,7 +66,7 @@ public class DictionaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.w("DictionaryActivity", "In OnCreate()-widget");
         model = new ViewModelProvider(this).get(DictionaryViewModel.class);
 
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
@@ -73,11 +78,10 @@ public class DictionaryActivity extends AppCompatActivity {
         String lastSearchTerm = prefs.getString("last_search_term", "");
         binding.searchText.setText(lastSearchTerm);
 
+
         binding.searchButton.setOnClickListener(click -> {
             model.searchText.postValue( binding.searchText.getText().toString());
-            model.searchText.observe(this, s -> {
-                binding.searchText.setText(lastSearchTerm);
-            });
+
             String word = binding.searchText.getText().toString();
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("last_search_term", word);
@@ -85,6 +89,46 @@ public class DictionaryActivity extends AppCompatActivity {
             fetchDefinitions(word);
 
         });
+
+//        binding.dictionary.setAdapter(new RecyclerView.Adapter<MyRowHolder>() {
+//            @NonNull
+//            @Override
+//            public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//                return null;
+//            }
+//
+//            /**
+//             * @param holder   The ViewHolder which should be updated to represent the contents of the
+//             *                 item at the given position in the data set.
+//             * @param position The position of the item within the adapter's data set.
+//             */
+//            @Override
+//            public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
+//
+//            }
+//
+//            /**
+//             * This initializes a ViewHolder to go at the row specified by the position parameter.
+//             * @param holder The ViewHolder which should be updated to represent the contents of the
+//             *              *                 item at the given position in the data set.
+//             * @param position The position of the item within the adapter's data set.
+//             */
+//            @Override
+//            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+//
+//            }
+//
+//            /**
+//             * This function just returns an int specifying how many items to draw.
+//             * @return int how many items to draw
+//             */
+//            @Override
+//            public int getItemCount() {
+//                return 0;
+//            }
+//        });
+//
+//*/
 
 
     }
@@ -120,6 +164,13 @@ public class DictionaryActivity extends AppCompatActivity {
 
         // Add the request to the RequestQueue
         requestQueue.add(jsonObjectRequest);
+    }
+
+
+    class MyRowHolder extends RecyclerView.ViewHolder {
+        public MyRowHolder(@NonNull View itemView) {
+            super(itemView);
+        }
     }
 }
 

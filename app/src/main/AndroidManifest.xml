@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Add DictionaryActivity declaration -->
+        <activity android:name=".Dictionary.DictionaryActivity">
+            <!-- intent-filter and other configurations -->
+        </activity>
     </application>
 
 </manifest>

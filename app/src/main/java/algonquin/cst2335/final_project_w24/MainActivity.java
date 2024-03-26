@@ -1,16 +1,14 @@
 package algonquin.cst2335.final_project_w24;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Button;
 
+import algonquin.cst2335.final_project_w24.Dictionary.DictionaryActivity;
 import algonquin.cst2335.final_project_w24.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {

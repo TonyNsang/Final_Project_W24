@@ -1,4 +1,4 @@
-package algonquin.cst2335.final_project_w24;
+package algonquin.cst2335.final_project_w24.Dictionary;
 
 import android.widget.Button;
 
