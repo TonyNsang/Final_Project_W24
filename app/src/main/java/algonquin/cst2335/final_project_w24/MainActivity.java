@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import algonquin.cst2335.final_project_w24.Dictionary.DictionaryActivity;
-import algonquin.cst2335.final_project_w24.SunApp.SunActivity;
+import algonquin.cst2335.final_project_w24.Recipe.RecipeActivity;
 import algonquin.cst2335.final_project_w24.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,15 +35,15 @@ public class MainActivity extends AppCompatActivity {
         Button dictionaryBtn = variableBinding.dictionaryButton;
         Button songBtn = variableBinding.deezerButton;
         //SunRise App Activity
-        sunBtn.setOnClickListener(click -> {
-            Intent songPage = new Intent(MainActivity.this, SunActivity.class);
+        /*sunBtn.setOnClickListener(click -> {
+            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
             startActivity(songPage);
-        });
-        //Recipe App activity
-        /*recipeBtn.setOnClickListener(click->{
-            Intent recipePage = new Intent(MainActivity.this, RecipeFinder.class);
-            startActivity(recipePage);
         });*/
+        //Recipe App activity
+        recipeBtn.setOnClickListener(click->{
+            Intent recipePage = new Intent(MainActivity.this, RecipeActivity.class);
+            startActivity(recipePage);
+        });
         //Dictionary App Activity
         dictionaryBtn.setOnClickListener(click -> {
             Intent dictionaryPage = new Intent(MainActivity.this, DictionaryActivity.class);
@@ -70,9 +70,11 @@ public class MainActivity extends AppCompatActivity {
             Intent dictionaryPage = new Intent(MainActivity.this, DictionaryActivity.class);
         startActivity(dictionaryPage);
             return true;
-//        } else if (item.getItemId() == R.id.sunIcon) {
-//
-//        } else if (item.getItemId() == R.id.sunIcon) {
+       } else if (item.getItemId() == R.id.recipeIcon) {
+           Intent recipePage = new Intent(MainActivity.this, RecipeActivity.class);
+           startActivity(recipePage);
+           return true;
+//        } else if (item.getItemId() == R.id.songIcon) {
 //            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
 //            startActivity(songPage);
 //            return true;
