@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import algonquin.cst2335.final_project_w24.Dictionary.DictionaryActivity;
+import algonquin.cst2335.final_project_w24.Recipe.RecipeActivity;
 import algonquin.cst2335.final_project_w24.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(songPage);
         });*/
         //Recipe App activity
-        /*recipeBtn.setOnClickListener(click->{
-            Intent recipePage = new Intent(MainActivity.this, RecipeFinder.class);
+        recipeBtn.setOnClickListener(click->{
+            Intent recipePage = new Intent(MainActivity.this, RecipeActivity.class);
             startActivity(recipePage);
-        });*/
+        });
         //Dictionary App Activity
         dictionaryBtn.setOnClickListener(click -> {
             Intent dictionaryPage = new Intent(MainActivity.this, DictionaryActivity.class);
