@@ -1,11 +1,14 @@
 package algonquin.cst2335.final_project_w24;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 
 import algonquin.cst2335.final_project_w24.Dictionary.DictionaryActivity;
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-   /* @Override
+   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_menu, menu);
         super.onCreateOptionsMenu(menu);
@@ -63,20 +66,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.recipeIcon) {
-            Intent recipePage = new Intent(MainActivity.this, RecipeFinder.class);
-            startActivity(recipePage);
+       if (item.getItemId() == R.id.dictionaryIcon) {
+            Intent dictionaryPage = new Intent(MainActivity.this, DictionaryActivity.class);
+        startActivity(dictionaryPage);
             return true;
-        } else if (item.getItemId() == R.id.sunIcon) {
-
-        } else if (item.getItemId() == R.id.songIcon) {
-            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
-            startActivity(songPage);
-            return true;
+//        } else if (item.getItemId() == R.id.sunIcon) {
+//
+//        } else if (item.getItemId() == R.id.songIcon) {
+//            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
+//            startActivity(songPage);
+//            return true;
         }else {
 
         }
         return false;
-    }*/
+    }
 
 }
