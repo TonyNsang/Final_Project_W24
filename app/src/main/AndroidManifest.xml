@@ -29,13 +29,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Add DictionaryActivity declaration -->
-        <activity android:name=".Dictionary.DictionaryActivity">
+        <activity 
+                  android:name=".Dictionary.DictionaryActivity">
+            <!-- intent-filter and other configurations -->
+        </activity>
+        <activity android:name=".SunApp.SunActivity">
 
             <!-- intent-filter and other configurations -->
-        
+        </activity>
+
        <activity
            android:name=".DeezerApp.SongActivity"
        </activity>
+
     </application>
 
 </manifest>
