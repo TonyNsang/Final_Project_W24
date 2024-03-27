@@ -77,9 +77,14 @@ public class MainActivity extends AppCompatActivity {
            startActivity(recipePage);
            return true;
         } else if (item.getItemId() == R.id.sunIcon) {
-            Intent songPage = new Intent(MainActivity.this, SunActivity.class);
-            startActivity(songPage);
+            Intent sunPage = new Intent(MainActivity.this, SunActivity.class);
+            startActivity(sunPage);
             return true;
+
+       } else if (item.getItemId() == R.id.songIcon) {
+           Intent songPage = new Intent(MainActivity.this, SongActivity.class);
+           startActivity(songPage);
+           return true;
         }else {
 
         }
