@@ -70,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
             Intent dictionaryPage = new Intent(MainActivity.this, DictionaryActivity.class);
         startActivity(dictionaryPage);
             return true;
-//        } else if (item.getItemId() == R.id.sunIcon) {
-//
+       } else if (item.getItemId() == R.id.recipeIcon) {
+           Intent recipePage = new Intent(MainActivity.this, RecipeActivity.class);
+           startActivity(recipePage);
+           return true;
 //        } else if (item.getItemId() == R.id.songIcon) {
 //            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
 //            startActivity(songPage);
