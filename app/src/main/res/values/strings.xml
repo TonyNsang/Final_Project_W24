@@ -11,4 +11,6 @@
     <string name="search_hint" />
     <string name="search_button" />
     <string name="spoonacular_api_key" />
+  <string name="enter_artist_name">Enter Artist Name</string>
+
 </resources>

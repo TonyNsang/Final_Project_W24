@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">المشروع النهائي W24</string>
+    <string name="search">البحث</string>
+    <string name="save">العناصر المحفوظة</string>
+    <string name="app1_name">العناصر المحفوظة</string>
+    <string name="app2_name">وصفة الطعام</string>
+    <string name="app3_name">قاموس</string>
+    <string name="app4_name">أغنية ديزر</string>
+    <string name="introduce_message">مرحباً! الرجاء اختيار نقطة العمل الخاصة بك</string>
+    <string name="error_msg">حدث خطأ أثناء جلب التعريفات</string>
+    <string name="enter_artist_name">أدخل اسم الفنان</string>
+</resources>
