@@ -9,4 +9,5 @@
     <string name="app4_name">Deezer Son</string>
     <string name="introduce_message">Bienvenue! Veuillez choisir votre point d\'action</string>
     <string name="error_msg">Erreur lors de la récupération des définitions</string>
+    <string name="enter_artist_name">Entez le nom de l\'artiste</string>
 </resources>
