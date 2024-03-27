@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
+import algonquin.cst2335.final_project_w24.DeezerApp.SongActivity;
 import algonquin.cst2335.final_project_w24.Dictionary.DictionaryActivity;
 import algonquin.cst2335.final_project_w24.databinding.ActivityMainBinding;
 
@@ -46,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(dictionaryPage);
         });
         //DeezerSong App Activity
-        /*songBtn.setOnClickListener(click -> {
-            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
+        songBtn.setOnClickListener(click -> {
+            Intent songPage = new Intent(MainActivity.this, SongActivity.class);
             startActivity(songPage);
-        });*/
+        });
 
     }
 
