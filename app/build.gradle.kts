@@ -44,4 +44,10 @@ dependencies {
 
     //Volley Library
     implementation("com.android.volley:volley:1.2.1")
+
+    //RoomDatabase
+    //Room Database dependencies
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 }

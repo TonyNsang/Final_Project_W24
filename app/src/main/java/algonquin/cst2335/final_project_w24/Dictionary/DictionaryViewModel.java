@@ -14,6 +14,6 @@ import java.util.ArrayList;
 public class DictionaryViewModel extends ViewModel {
     public MutableLiveData<String> searchText = new MutableLiveData<>();
 
-    public MutableLiveData<ArrayList<String>> messages = new MutableLiveData< >();
+    public MutableLiveData<ArrayList<String>> definitions = new MutableLiveData< >();
 
 }

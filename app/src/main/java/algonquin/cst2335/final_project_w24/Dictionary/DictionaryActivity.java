@@ -82,6 +82,7 @@ public class DictionaryActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.dictionaryView.setLayoutManager(new LinearLayoutManager(this));
+
         requestQueue = Volley.newRequestQueue(this);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
