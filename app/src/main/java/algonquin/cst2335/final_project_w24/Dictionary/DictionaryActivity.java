@@ -3,7 +3,9 @@ package algonquin.cst2335.final_project_w24.Dictionary;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,10 +25,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import algonquin.cst2335.final_project_w24.R;
 import algonquin.cst2335.final_project_w24.databinding.ActivityDictionaryBinding;
 
 /**
@@ -51,7 +56,11 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Array to store definitions of a word
      */
-    private List<String> definitions = new ArrayList<>();
+    private ArrayList<String> definitions = new ArrayList<>();
+    /**
+     * RecycleView Adapter
+     */
+    private RecyclerView.Adapter myAdapter;
     /**
      * Client Request to server
      */
@@ -72,6 +81,8 @@ public class DictionaryActivity extends AppCompatActivity {
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.dictionaryView.setLayoutManager(new LinearLayoutManager(this));
+
         requestQueue = Volley.newRequestQueue(this);
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
@@ -86,49 +97,50 @@ public class DictionaryActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("last_search_term", word);
             editor.apply();
+            definitions.add(binding.searchText.getText().toString());
             fetchDefinitions(word);
 
         });
+         binding.dictionaryView.setAdapter(myAdapter= new RecyclerView.Adapter<MyRowHolder>() {
+             /**
+              * This function creates a ViewHolder object. It represents a single row in the list
+              * @param parent   The ViewGroup into which the new View will be added after it is bound to
+              *                 an adapter position.
+              * @param viewType The view type of the new View.
+              * @return MyRowHolder
+              */
+             @NonNull
+             @Override
+             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-//        binding.dictionary.setAdapter(new RecyclerView.Adapter<MyRowHolder>() {
-//            @NonNull
-//            @Override
-//            public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                return null;
-//            }
-//
-//            /**
-//             * @param holder   The ViewHolder which should be updated to represent the contents of the
-//             *                 item at the given position in the data set.
-//             * @param position The position of the item within the adapter's data set.
-//             */
-//            @Override
-//            public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
-//
-//            }
-//
-//            /**
-//             * This initializes a ViewHolder to go at the row specified by the position parameter.
-//             * @param holder The ViewHolder which should be updated to represent the contents of the
-//             *              *                 item at the given position in the data set.
-//             * @param position The position of the item within the adapter's data set.
-//             */
-//            @Override
-//            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//
-//            }
-//
-//            /**
-//             * This function just returns an int specifying how many items to draw.
-//             * @return int how many items to draw
-//             */
-//            @Override
-//            public int getItemCount() {
-//                return 0;
-//            }
-//        });
-//
-//*/
+                 return null;
+             }
+
+             /**
+              * This initializes a ViewHolder to go at the row specified by the position parameter.
+              * @param holder   The ViewHolder which should be updated to represent the contents of the
+              *                 item at the given position in the data set.
+              * @param position The position of the item within the adapter's data set.
+              */
+             @Override
+             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
+                 String obj = definitions.get(position);
+                holder.definitionText.setText(obj);
+             }
+
+             /**
+              * This function just returns an int specifying how many items to draw.
+              * @return int
+              */
+             @Override
+             public int getItemCount() {
+                 return definitions.size();
+             }
+
+             public int getItemViewType(int position){
+                 return 0;
+             }
+         });
 
 
     }
@@ -166,10 +178,15 @@ public class DictionaryActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-
+    /**
+     * an object for representing everything that goes on a row in the list
+     */
     class MyRowHolder extends RecyclerView.ViewHolder {
+        TextView definitionText;
+
         public MyRowHolder(@NonNull View itemView) {
             super(itemView);
+            definitionText = itemView.findViewById(R.id.definitions);
         }
     }
 }

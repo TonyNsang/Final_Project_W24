@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/recipeIcon"
+        android:icon="@drawable/recipe"
+        android:title="Food Recipe"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/sunIcon"
+        android:icon="@drawable/sunrise"
+        android:title="Sun"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/songIcon"
+        android:icon="@drawable/deezersong"
+        android:title="Deezer Song"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/dictionaryIcon"
+        android:icon="@drawable/dictionary"
+        android:title="Dictionary"
+        app:showAsAction="always" />
+</menu>

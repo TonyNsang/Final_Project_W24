@@ -7,9 +7,9 @@
     tools:context=".Dictionary.DictionaryActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dictionary"
-        android:layout_width="409dp"
-        android:layout_height="729dp"
+        android:id="@+id/dictionaryView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="128dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
