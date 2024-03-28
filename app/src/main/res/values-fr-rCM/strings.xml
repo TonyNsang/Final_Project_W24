@@ -10,4 +10,7 @@
     <string name="introduce_message">Bienvenue! Veuillez choisir votre point d\'action</string>
     <string name="error_msg">Erreur lors de la récupération des définitions</string>
     <string name="enter_artist_name">Entez le nom de l\'artiste</string>
+    <string name="search_hint">recherche_indice</string>
+    <string name="search_button">bouton de recherche</string>
+    <string name="spoonacular_api_key">clé API cuillère</string>
 </resources>

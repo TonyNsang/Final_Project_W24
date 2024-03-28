@@ -1,138 +1,138 @@
 package algonquin.cst2335.final_project_w24.DeezerApp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import algonquin.cst2335.final_project_w24.R;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SongActivity extends AppCompatActivity {
 
-    EditText artistNameEditText;
-    Button searchButton;
-    RecyclerView songsRecyclerView;
-    String url;
-    RequestQueue queue;
-    private ArtistAdapter adapter;
-    ProgressBar progressBar;
-    TextView tvEmptyMessage;
+    private EditText artistNameEditText;
+    private Button searchButton;
+    private RecyclerView songsRecyclerView;
+    private SongsAdapter songsAdapter;
+    private  androidx.constraintlayout.widget.ConstraintLayout layout;
+
+    private final List<TracklistResponse.Track> songList = new ArrayList<>();
+    private OkHttpClient client = new OkHttpClient();
+    private Gson gson = new Gson();
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_song);
-
+        setContentView(algonquin.cst2335.final_project_w24.R.layout.activity_song);
 
         artistNameEditText = findViewById(R.id.artistNameEditText);
         searchButton = findViewById(R.id.searchButton);
-        songsRecyclerView = findViewById(R.id.songsRecyclerView); //Initialize RecyclerView
-        progressBar = findViewById(R.id.progressBar);
-        tvEmptyMessage = findViewById(R.id.tvEmptyMessage);
+        songsRecyclerView = findViewById(R.id.songsRecyclerView);
 
-        queue = Volley.newRequestQueue(this);  //i initialize Volley RequestQueue
+        // Setup RecyclerView
+        songsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        SongsAdapter.OnItemClickListener listener = song -> {
+            Intent intent = new Intent(SongActivity.this, SongDetailsActivity.class);
+            intent.putExtra("songId", song.getId()); // Replace "getId()" with actual method to retrieve ID
+            startActivity(intent);
+        };
+        songsAdapter = new SongsAdapter(LayoutInflater.from(this), songList, listener);
+        songsRecyclerView.setAdapter(songsAdapter);
 
-        // Initialize the adapter with an empty list and a click listener
-        adapter = new ArtistAdapter(new ArrayList<>(), artist -> {
-            // Handle artist click
-            Toast.makeText(SongActivity.this, "Clicked on " + artist.getName(), Toast.LENGTH_SHORT).show();
-        });
 
+        searchButton.setOnClickListener(v -> {
+            String artistName = artistNameEditText.getText().toString().trim();
+            if (!artistName.isEmpty()) {
+                // Clear existing data
+                songList.clear();
+                songsAdapter.notifyDataSetChanged();
 
-        songsRecyclerView.setAdapter(adapter); //Set the adapter to RecyclerView
-        songsRecyclerView.setLayoutManager(new LinearLayoutManager(this));// Set LinearLayoutManager to lays out all item views in a single column or a single row depending on its orientation
+                // Perform the search and update UI
+                searchForArtistAndFetchTopTracks(artistName);
+            }
 
-        searchButton.setOnClickListener(v-> {
-            String artistName = artistNameEditText.getText().toString();
-            searchForArtist(artistName);
         });
 
     }
-    private void searchForArtist(String artistName){
 
-        progressBar.setVisibility(View.VISIBLE); // Show ProgressBar
-        songsRecyclerView.setVisibility(View.GONE); // Hide RecyclerView
-        tvEmptyMessage.setVisibility(View.GONE); // Hide TextView (the empty/error message)
+    private void searchForArtistAndFetchTopTracks(String artistName) {
 
-        String artistNameQuery = artistName.replace(" ", "%20");
-        String url = "https://api.deezer.com/search/artist/?q=" + artistNameQuery;
+        // Step 1: Search for the artist by name
+        String searchUrl = "https://api.deezer.com/search/artist?q=" + artistName.trim().replace(" ", "+");
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response ->{
-            // Log.d("SongActivity", "Response: " + response.toString()); i used this print statement to test fetching of data
-            try {
-                JSONArray artistsArray = response.getJSONArray("data");
-                List<Artist> artistList  = new ArrayList<>();
-                for (int i = 0; i < artistsArray.length(); i++) {
-                    JSONObject artistJson = artistsArray.getJSONObject(i);
+        // Create the Request object with the search URL
+        Request request = new Request.Builder()
+                .url(searchUrl)
+                .build();
+        // Placeholder for network operation
+        executorService.execute(() -> {
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-                    Artist artist = new Artist(
-                            artistJson.getLong("id"),
-                            artistJson.getString("name"),
-                            artistJson.getString("link"),
-                            artistJson.getString("picture"),
-                            artistJson.getString("picture_small"),
-                            artistJson.getString("picture_medium"),
-                            artistJson.getString("picture_big"),
-                            artistJson.getString("picture_xl"),
-                            artistJson.getInt("nb_album"),
-                            artistJson.getInt("nb_fan"),
-                            artistJson.getBoolean("radio"),
-                            artistJson.getString("tracklist"),
-                            artistJson.getString("type")
-                    );
-                    artistList.add(artist);
-                }
+                ArtistSearchResponse searchResponse = gson.fromJson(response.body().string(), ArtistSearchResponse.class);
+                if (searchResponse.getData().size() > 0) {
+
+                    ArtistDetails artist = searchResponse.getData().get(0);
+                    fetchTopTracksForArtist(artist.getId());
+
+                } else {
+                    // Handle "no artist found" case
                     runOnUiThread(() -> {
-                        progressBar.setVisibility(View.GONE); // Show empty message
-                        if (!artistList.isEmpty()) {
-                            tvEmptyMessage.setVisibility(View.GONE); // Ensure message is hidden
-                            songsRecyclerView.setVisibility(View.VISIBLE); // Show the RecyclerView
-                            adapter.updateData(artistList);
-                        } else {
-                            tvEmptyMessage.setVisibility(View.VISIBLE); // Show empty message
-                            songsRecyclerView.setVisibility(View.GONE); // Keep RecyclerView hidden
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    runOnUiThread(() -> {
-                        progressBar.setVisibility(View.GONE);
-                        tvEmptyMessage.setText("Failed to parse data.");
+                        TextView tvEmptyMessage = findViewById(R.id.tvEmptyMessage);
+                        tvEmptyMessage.setText("No artist found. Please try a different search.");
                         tvEmptyMessage.setVisibility(View.VISIBLE);
+                        // Make sure the RecyclerView is hidden or cleared as it might contain old data
                         songsRecyclerView.setVisibility(View.GONE);
                     });
                 }
-            },
-            error -> runOnUiThread(() -> {
-                Log.e("SongActivity", "Error: " + error.toString());
-                progressBar.setVisibility(View.GONE);
-                songsRecyclerView.setVisibility(View.GONE);
-                tvEmptyMessage.setText("Failed to load data. Please try again.");
-                tvEmptyMessage.setVisibility(View.VISIBLE);
-            })
-    );
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle errors (e.g., network issue)
+            }
+        });
+    }
+    private void fetchTopTracksForArtist(long artistId) {
+        String tracksUrl = "https://api.deezer.com/artist/" + artistId + "/top?limit=50";
 
-            queue.add(jsonObjectRequest);
-        }
+        executorService.execute(() -> {
+            Request request = new Request.Builder().url(tracksUrl).build();
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
+                TracklistResponse tracklistResponse = gson.fromJson(response.body().string(), TracklistResponse.class);
+                List<TracklistResponse.Track> fetchedTracks = tracklistResponse.getData(); // Correctly refer to fetched tracks here
 
+                runOnUiThread(() -> {
+                    songList.clear(); // Clear existing songs in the list
+                    songList.addAll(fetchedTracks); // Add all fetched tracks to the list
+                    songsAdapter.notifyDataSetChanged(); // Notify the adapter that the data set has changed
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle errors
+            }
+        });
+    }
 }
