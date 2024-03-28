@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -56,7 +57,7 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Array to store definitions of a word
      */
-    private ArrayList<String> definitions = new ArrayList<>();
+    private ArrayList<DictionaryData> definitions = new ArrayList<>();
     /**
      * RecycleView Adapter
      */
@@ -64,7 +65,7 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Client Request to server
      */
-    protected RequestQueue requestQueue;
+     RequestQueue requestQueue=null;
     /**
      * On create function to load the Activities layout inclusing widgets
      * @param savedInstanceState If the activity is being re-initialized after
@@ -79,11 +80,14 @@ public class DictionaryActivity extends AppCompatActivity {
         model = new ViewModelProvider(this).get(DictionaryViewModel.class);
 
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
+        requestQueue = Volley.newRequestQueue(this);
+
         setContentView(binding.getRoot());
+
 
         binding.dictionaryView.setLayoutManager(new LinearLayoutManager(this));
 
-        requestQueue = Volley.newRequestQueue(this);
+
 
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         String lastSearchTerm = prefs.getString("last_search_term", "");
@@ -93,11 +97,12 @@ public class DictionaryActivity extends AppCompatActivity {
         binding.searchButton.setOnClickListener(click -> {
             model.searchText.postValue( binding.searchText.getText().toString());
 
+//            String word = binding.searchText.getText().toString();
             String word = binding.searchText.getText().toString();
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("last_search_term", word);
             editor.apply();
-            definitions.add(binding.searchText.getText().toString());
+            //definitions.add(binding.searchText.getText().toString());
             fetchDefinitions(word);
 
         });
@@ -112,8 +117,8 @@ public class DictionaryActivity extends AppCompatActivity {
              @NonNull
              @Override
              public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-                 return null;
+                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_definition, parent, false);
+                 return new MyRowHolder(itemView);
              }
 
              /**
@@ -124,8 +129,11 @@ public class DictionaryActivity extends AppCompatActivity {
               */
              @Override
              public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
-                 String obj = definitions.get(position);
-                holder.definitionText.setText(obj);
+                 DictionaryData currentTerm = definitions.get(position);
+                holder.searchTermText.setText(currentTerm.getSearchTerm());
+
+                 holder.definitionText.setText(formatDefinitions(currentTerm.getDefinitionsOfTerm()));
+
              }
 
              /**
@@ -164,10 +172,19 @@ public class DictionaryActivity extends AppCompatActivity {
                             for (int j = 0; j < definitionsJsonArray.length(); j++) {
                                 JSONObject definitionObject = definitionsJsonArray.getJSONObject(j);
                                 String definition = definitionObject.getString("definition");
-                                definitions.add(definition);
+                                ArrayList<String> array = new ArrayList<>();
+                                array.add(definition);
+
+
+
+                                DictionaryData data = new DictionaryData();
+                                data.setSearchTerm(binding.searchText.getText().toString());
+                                data.setDefinitionsOfTerm(array);
+
+                                definitions.add(data);
                             }
                         }
-                        // definitionAdapter.notifyDataSetChanged();
+                        myAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -182,12 +199,21 @@ public class DictionaryActivity extends AppCompatActivity {
      * an object for representing everything that goes on a row in the list
      */
     class MyRowHolder extends RecyclerView.ViewHolder {
+        TextView searchTermText;
         TextView definitionText;
 
         public MyRowHolder(@NonNull View itemView) {
             super(itemView);
-            definitionText = itemView.findViewById(R.id.definitions);
+            searchTermText = itemView.findViewById(R.id.word);
+            definitionText = itemView.findViewById(R.id.definitionText);
         }
+    }
+    private String formatDefinitions(ArrayList<String> definitions) {
+        StringBuilder formattedDefinitions = new StringBuilder();
+        for (String definition : definitions) {
+            formattedDefinitions.append("\u2022 ").append(definition).append("\n"); // Unicode for bullet point
+        }
+        return formattedDefinitions.toString();
     }
 }
 
