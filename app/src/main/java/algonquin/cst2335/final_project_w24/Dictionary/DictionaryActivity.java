@@ -27,9 +27,13 @@ import com.android.volley.NetworkError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +81,7 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Client Request to server
      */
-     RequestQueue requestQueue=null;
+     RequestQueue requestQueue;
     /**
      * On create function to load the Activities layout inclusing widgets
      * @param savedInstanceState If the activity is being re-initialized after
@@ -116,7 +120,7 @@ public class DictionaryActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("last_search_term", word);
             editor.apply();
-            //definitions.add(binding.searchText.getText().toString());
+
             fetchDefinitions(word);
 
         });
@@ -171,58 +175,45 @@ public class DictionaryActivity extends AppCompatActivity {
      * Sends request to Dictionary API and fetches the definitions related to the word entered by user
      * @param word Word entered by user
      */
-    private void fetchDefinitions(String word) {
+    public void fetchDefinitions(String word) {
+        String apiUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
         requestQueue = Volley.newRequestQueue(this);
-        String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                apiUrl,
+                null,
                 response -> {
+                    List<String> definitions = new ArrayList<>();
+
                     try {
-                        JSONArray jsonArray = new JSONArray(word);
-                        List<DictionaryData> wordDefinitions = new ArrayList<>();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject wordObject = jsonArray.getJSONObject(i);
-                            JSONArray meaningsArray = wordObject.getJSONArray("meanings");
-                            for (int j = 0; j < meaningsArray.length(); j++) {
-                                JSONObject meaningObject = meaningsArray.getJSONObject(j);
-                                JSONArray definitionsArray = meaningObject.getJSONArray("definitions");
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            JSONArray meanings = jsonObject.getJSONArray("meanings");
+                            for (int j = 0; j < meanings.length(); j++) {
+                                JSONObject meaning = meanings.getJSONObject(j);
+                                JSONArray definitionsArray = meaning.getJSONArray("definitions");
                                 for (int k = 0; k < definitionsArray.length(); k++) {
-                                    JSONObject definitionObject = definitionsArray.getJSONObject(k);
-                                    String definition = definitionObject.optString("definition");
-                                    // Create a DictionaryData object to store the word and its definition
-                                    DictionaryData data = new DictionaryData();
-                                    data.setSearchTerm(word);
-                                    ArrayList<String> definitionList = new ArrayList<>();
-                                    definitionList.add(definition);
-                                    data.setDefinitionsOfTerm(definitionList);
-                                    // Add the DictionaryData object to the list
-                                    wordDefinitions.add(data);
+                                    JSONObject definitionObj = definitionsArray.getJSONObject(k);
+                                    String definition = definitionObj.getString("definition");
+                                    binding.textView2.setText(definition);
+                                    definitions.add(definition);
                                 }
                             }
                         }
-                        // Now you have a list of DictionaryData objects containing the word and its definitions
-                        // Do whatever you need with this data
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(TAG, "Error parsing JSON response", e);
                     }
+
                 },
                 error -> {
-                    if (error instanceof NetworkError) {
-                        Toast.makeText(DictionaryActivity.this, "Network error", Toast.LENGTH_SHORT).show();
-                    } else if (error instanceof ServerError) {
-                        Toast.makeText(DictionaryActivity.this, "Server error", Toast.LENGTH_SHORT).show();
-                    } else if (error instanceof ParseError) {
-                        Toast.makeText(DictionaryActivity.this, "Parse error", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(DictionaryActivity.this, "Unknown error", Toast.LENGTH_SHORT).show();
-                    }
-                    error.printStackTrace();
+                    Log.e(TAG, "Error fetching data", error);
+                    binding.textView2.setText("ERROR");
                 }
         );
 
-        // Add the request to the RequestQueue
-        requestQueue.add(jsonObjectRequest);
+        requestQueue.add(jsonArrayRequest);
     }
+
 
 
 
