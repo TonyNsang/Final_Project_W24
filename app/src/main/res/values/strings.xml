@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Final_Project_W24</string>
     <string name="search">SEARCH</string>
-    <string name="save">Saved Items</string>
+    <string name="saveItems">Saved Items</string>
     <string name="app1_name">Sun App</string>
     <string name="app2_name">Food Recipe</string>
     <string name="app3_name">Dictionary</string>
@@ -12,5 +12,6 @@
     <string name="search_button" />
     <string name="spoonacular_api_key" />
   <string name="enter_artist_name">Enter Artist Name</string>
+    <string name="save">Save</string>
 
 </resources>

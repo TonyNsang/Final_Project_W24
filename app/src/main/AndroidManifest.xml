@@ -30,9 +30,10 @@
             </intent-filter>
         </activity> <!-- Add DictionaryActivity declaration -->
         <activity 
-                  android:name=".Dictionary.DictionaryActivity">
+                  android:name=".Dictionary.DictionaryActivity"
+            android:exported="false"/>
             <!-- intent-filter and other configurations -->
-        </activity>
+
         <activity android:name=".SunApp.SunActivity">
 
             <!-- intent-filter and other configurations -->
