@@ -82,7 +82,7 @@ public class SongActivity extends AppCompatActivity {
                 JSONArray artistsArray = response.getJSONArray("data");
                 List<Artist> artistList  = new ArrayList<>();
                 for (int i = 0; i < artistsArray.length(); i++) {
-                    JSONObject artistJson  = artistsArray.getJSONObject(i);
+                    JSONObject artistJson = artistsArray.getJSONObject(i);
 
                     Artist artist = new Artist(
                             artistJson.getLong("id"),
@@ -101,48 +101,38 @@ public class SongActivity extends AppCompatActivity {
                     );
                     artistList.add(artist);
                 }
-
-                // Update UI based on whether artistList is empty
-//                if (artistList.isEmpty()) {
                     runOnUiThread(() -> {
-                        progressBar.setVisibility(View.GONE); // Hide loading
+                        progressBar.setVisibility(View.GONE); // Show empty message
                         if (!artistList.isEmpty()) {
-                        tvEmptyMessage.setVisibility(View.GONE); // Ensure message is hidden
-                        songsRecyclerView.setVisibility(View.VISIBLE); // Show the RecyclerView
-                        adapter.updateData(artistList); // Update data
-//                    });
-                } else {
-//                    runOnUiThread(() -> {
-//                        progressBar.setVisibility(View.GONE); // Hide loading
-                        tvEmptyMessage.setVisibility(View.VISIBLE); // Show empty message
-                        songsRecyclerView.setVisibility(View.GONE); // Keep RecyclerView hidden
-//                    });
-                    }
-
-                });
-            }catch (JSONException e) {
-                e.printStackTrace();
-                runOnUiThread(() -> {
-                    progressBar.setVisibility(View.GONE);
-                    tvEmptyMessage.setText("Failed to parse data.");
-                    tvEmptyMessage.setVisibility(View.VISIBLE);
-                    songsRecyclerView.setVisibility(View.GONE);
-                });
-            }
-        },
-
-        error -> runOnUiThread(() -> {
-            Log.e("SongActivity", "Error: " + error.toString());
-            progressBar.setVisibility(View.GONE);
-            songsRecyclerView.setVisibility(View.GONE);
-            tvEmptyMessage.setText("Failed to load data. Please try again.");
-            tvEmptyMessage.setVisibility(View.VISIBLE);
-        })
+                            tvEmptyMessage.setVisibility(View.GONE); // Ensure message is hidden
+                            songsRecyclerView.setVisibility(View.VISIBLE); // Show the RecyclerView
+                            adapter.updateData(artistList);
+                        } else {
+                            tvEmptyMessage.setVisibility(View.VISIBLE); // Show empty message
+                            songsRecyclerView.setVisibility(View.GONE); // Keep RecyclerView hidden
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    runOnUiThread(() -> {
+                        progressBar.setVisibility(View.GONE);
+                        tvEmptyMessage.setText("Failed to parse data.");
+                        tvEmptyMessage.setVisibility(View.VISIBLE);
+                        songsRecyclerView.setVisibility(View.GONE);
+                    });
+                }
+            },
+            error -> runOnUiThread(() -> {
+                Log.e("SongActivity", "Error: " + error.toString());
+                progressBar.setVisibility(View.GONE);
+                songsRecyclerView.setVisibility(View.GONE);
+                tvEmptyMessage.setText("Failed to load data. Please try again.");
+                tvEmptyMessage.setVisibility(View.VISIBLE);
+            })
     );
 
-    queue.add(jsonObjectRequest);
+            queue.add(jsonObjectRequest);
+        }
 
-    }
 
 }
-
