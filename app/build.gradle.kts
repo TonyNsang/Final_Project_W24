@@ -42,6 +42,11 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+
     //Volley Library
     implementation("com.android.volley:volley:1.2.1")
+    implementation ("com.github.bumptech.glide:glide:5.0.0-rc01")
+    annotationProcessor ("com.github.bumptech.glide:compiler:5.0.0-rc01")
+    implementation ("androidx.room:room-runtime:2.4.2")
+    annotationProcessor ("androidx.room:room-compiler:2.4.2")
 }
