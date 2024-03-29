@@ -21,30 +21,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.NetworkError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.VolleyError;
+
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
+
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonObject;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
+
 
 import java.util.ArrayList;
-import java.util.List;
 
-import algonquin.cst2335.final_project_w24.DeezerApp.SongActivity;
-import algonquin.cst2335.final_project_w24.MainActivity;
 import algonquin.cst2335.final_project_w24.R;
 import algonquin.cst2335.final_project_w24.Recipe.RecipeActivity;
 import algonquin.cst2335.final_project_w24.SunApp.SunActivity;
@@ -73,7 +65,7 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Array to store definitions of a word
      */
-    private ArrayList<DictionaryData> definitions = new ArrayList<>();
+    private ArrayList<DictionaryData> wordAndDefinitions = new ArrayList<>();
     /**
      * RecycleView Adapter
      */
@@ -147,7 +139,7 @@ public class DictionaryActivity extends AppCompatActivity {
               */
              @Override
              public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
-                 DictionaryData currentTerm = definitions.get(position);
+                 DictionaryData currentTerm = wordAndDefinitions.get(position);
                 holder.searchTermText.setText(currentTerm.getSearchTerm());
 
                  holder.definitionText.setText(formatDefinitions(currentTerm.getDefinitionsOfTerm()));
@@ -160,7 +152,7 @@ public class DictionaryActivity extends AppCompatActivity {
               */
              @Override
              public int getItemCount() {
-                 return definitions.size();
+                 return wordAndDefinitions.size();
              }
 
              public int getItemViewType(int position){
@@ -183,23 +175,38 @@ public class DictionaryActivity extends AppCompatActivity {
                 apiUrl,
                 null,
                 response -> {
-                    List<String> definitions = new ArrayList<>();
+                    ArrayList<DictionaryData> definitionsList = new ArrayList<>();
 
                     try {
                         for (int i = 0; i < response.length(); i++) {
                             JSONObject jsonObject = response.getJSONObject(i);
+                            String searchTerm = jsonObject.getString("word");
                             JSONArray meanings = jsonObject.getJSONArray("meanings");
+
+                            // List to store definitions of the current term
+                            ArrayList<String> definitions = new ArrayList<>();
+
                             for (int j = 0; j < meanings.length(); j++) {
                                 JSONObject meaning = meanings.getJSONObject(j);
                                 JSONArray definitionsArray = meaning.getJSONArray("definitions");
                                 for (int k = 0; k < definitionsArray.length(); k++) {
                                     JSONObject definitionObj = definitionsArray.getJSONObject(k);
                                     String definition = definitionObj.getString("definition");
-                                    binding.textView2.setText(definition);
                                     definitions.add(definition);
                                 }
                             }
+
+                            // Create a DictionaryData object and add it to the list
+                            DictionaryData data = new DictionaryData();
+                            data.setSearchTerm(searchTerm);
+                            data.setDefinitionsOfTerm(definitions);
+                            definitionsList.add(data);
                         }
+
+                        // Update RecyclerView adapter with the new data
+                        wordAndDefinitions.clear();
+                        wordAndDefinitions.addAll(definitionsList);
+                        myAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         Log.e(TAG, "Error parsing JSON response", e);
                     }
@@ -207,12 +214,12 @@ public class DictionaryActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "Error fetching data", error);
-                    binding.textView2.setText("ERROR");
                 }
         );
 
         requestQueue.add(jsonArrayRequest);
     }
+
 
 
 
