@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import algonquin.cst2335.final_project_w24.DeezerApp.SongActivity;
+import algonquin.cst2335.final_project_w24.MainActivity;
 import algonquin.cst2335.final_project_w24.R;
 import algonquin.cst2335.final_project_w24.Recipe.RecipeActivity;
 import algonquin.cst2335.final_project_w24.SunApp.SunActivity;
@@ -295,6 +297,10 @@ public class DictionaryActivity extends AppCompatActivity {
             Intent sunPage = new Intent(DictionaryActivity.this, SunActivity.class);
             startActivity(sunPage);
             return true;
+        } else if (item.getItemId() == R.id.songIcon) {
+                Intent songPage = new Intent(DictionaryActivity.this, SongActivity.class);
+                startActivity(songPage);
+                return true;
 
         } else if (item.getItemId() == R.id.help_Icon) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
