@@ -78,7 +78,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.SongViewHold
      //   SongViewHolder(View itemView, ConstraintLayout scrollItem, ConstraintLayout scrollItem1) {
           SongViewHolder(View itemView) {
                 super(itemView);
-            songImage = itemView.findViewById(algonquin.cst2335.final_project_w24.R.id.songImage);
+            songImage = itemView.findViewById(R.id.songImage);
             songTitle = itemView.findViewById(R.id.songTitle);
             albumTitle = itemView.findViewById(R.id.albumTitle);
 //            this.scrollItem = scrollItem1;

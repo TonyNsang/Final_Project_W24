@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import algonquin.cst2335.final_project_w24.R;
 
@@ -19,7 +20,7 @@ public class SongDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(algonquin.cst2335.final_project_w24.R.layout.activity_song_details);
+        setContentView(R.layout.activity_song_details);
 
         ImageView albumCoverImageView = findViewById(R.id.albumCoverImageView);
         TextView songTitleTextView = findViewById(R.id.songTitleTextView);
@@ -57,15 +58,19 @@ public class SongDetailsActivity extends AppCompatActivity {
                 .into(albumCoverImageView);
 
 
-        // Handle save button click
         saveSongButton.setOnClickListener(view -> {
-            SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-            myEdit.putString("songTitle", songTitle);
-            myEdit.apply();
-            Toast.makeText(this, "Song saved", Toast.LENGTH_SHORT).show();
+            Gson gson = new Gson();
+            TrackFavoriteDetails trackDetails = new TrackFavoriteDetails(songTitle, albumName, duration, albumCoverUrl);
+            String trackJson = gson.toJson(trackDetails);
 
+            SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("favoriteTrack", trackJson);
+            editor.apply();
+
+            Toast.makeText(SongDetailsActivity.this, "Track saved", Toast.LENGTH_SHORT).show();
         });
+
 
 
 

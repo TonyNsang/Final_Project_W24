@@ -37,6 +37,8 @@
        <activity
            android:name=".DeezerApp.SongActivity">
        </activity>
+        <activity android:name=".DeezerApp.FavoritesActivity"></activity>
+
 
     </application>
 

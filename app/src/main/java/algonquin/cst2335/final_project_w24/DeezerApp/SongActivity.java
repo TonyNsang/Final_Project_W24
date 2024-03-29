@@ -32,7 +32,7 @@ public class SongActivity extends AppCompatActivity {
     private Button searchButton;
     private RecyclerView songsRecyclerView;
     private SongsAdapter songsAdapter;
-    private  androidx.constraintlayout.widget.ConstraintLayout layout;
+    private  ConstraintLayout layout;
 
     private final List<TracklistResponse.Track> songList = new ArrayList<>();
     private OkHttpClient client = new OkHttpClient();
@@ -45,7 +45,7 @@ public class SongActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(algonquin.cst2335.final_project_w24.R.layout.activity_song);
+        setContentView(R.layout.activity_song);
 
         artistNameEditText = findViewById(R.id.artistNameEditText);
         searchButton = findViewById(R.id.searchButton);
