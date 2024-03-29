@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface DictionaryDAO {
     @Insert
-    public  long insertWord(DictionaryData w);
+    public  void insertWord(DictionaryData w);
     @Query("Select * from DictionaryData")
     public List<DictionaryData> getAllWords();
     @Query("SELECT * FROM DictionaryData WHERE id = :id")

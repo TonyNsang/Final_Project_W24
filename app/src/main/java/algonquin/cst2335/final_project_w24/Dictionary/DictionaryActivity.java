@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,6 +38,8 @@ import org.json.JSONObject;
 
 
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import algonquin.cst2335.final_project_w24.R;
 import algonquin.cst2335.final_project_w24.Recipe.RecipeActivity;
@@ -81,6 +84,10 @@ public class DictionaryActivity extends AppCompatActivity {
      */
     DictionaryDAO mDAO;
     /**
+     * DTO
+     */
+    DictionaryData data;
+    /**
      * On create function to load the Activities layout inclusing widgets
      * @param savedInstanceState If the activity is being re-initialized after
      *     previously being shut down then this Bundle contains the data it most
@@ -91,6 +98,7 @@ public class DictionaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.w("DictionaryActivity", "In OnCreate()-widget");
+
         //ViewModel for SeachText
         model = new ViewModelProvider(this).get(DictionaryViewModel.class);
 
@@ -126,6 +134,16 @@ public class DictionaryActivity extends AppCompatActivity {
             fetchDefinitions(word);
 
         });
+
+//        binding.save.setOnClickListener(click ->{
+//            Executor thread = Executors.newSingleThreadExecutor();
+//            thread.execute(() ->
+//            {
+//                mDAO.insertWord(data);
+//                Toast.makeText(getApplicationContext(), "Word and Definitions have been saved", Toast.LENGTH_SHORT).show();
+//            });
+//
+//        });
          binding.dictionaryView.setAdapter(myAdapter= new RecyclerView.Adapter<MyRowHolder>() {
              /**
               * This function creates a ViewHolder object. It represents a single row in the list
@@ -207,7 +225,7 @@ public class DictionaryActivity extends AppCompatActivity {
                             }
 
                             // Create a DictionaryData object and add it to the list
-                            DictionaryData data = new DictionaryData();
+                            data = new DictionaryData();
                             data.setSearchTerm(searchTerm);
                             data.setDefinitionsOfTerm(definitions);
                             definitionsList.add(data);
