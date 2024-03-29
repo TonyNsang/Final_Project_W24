@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -137,16 +138,45 @@ public class DictionaryActivity extends AppCompatActivity {
 
         });
 
-//        binding.save.setOnClickListener(click ->{
-//            Executor thread = Executors.newSingleThreadExecutor();
-//            thread.execute(() ->
-//            {
-//                mDAO.insertWord(data);
-//                Toast.makeText(getApplicationContext(), "Word and Definitions have been saved", Toast.LENGTH_SHORT).show();
-//            });
-//
-//        });
-         binding.dictionaryView.setAdapter(myAdapter= new RecyclerView.Adapter<MyRowHolder>() {
+        //OnClick listener for save button
+        binding.save.setOnClickListener(click -> {
+            // Iterate over the list of wordAndDefinitions to save each entry
+            Executor thread = Executors.newSingleThreadExecutor();
+            thread.execute(() -> {
+                    // Save the data object
+                    mDAO.insertWord(data);
+
+                runOnUiThread(() -> Toast.makeText(DictionaryActivity.this, "Word and Definitions have been saved", Toast.LENGTH_SHORT).show());
+            });
+        });
+
+
+        binding.savedButton.setOnClickListener(click -> {
+            // Retrieve all saved search terms from the database
+            Executor thread = Executors.newSingleThreadExecutor();
+            thread.execute(() -> {
+                List<DictionaryData> savedWords = mDAO.getAllWords();
+                List<String> savedSearchTerms = new ArrayList<>();
+                for (DictionaryData word : savedWords) {
+                    savedSearchTerms.add(word.getSearchTerm());
+                }
+                runOnUiThread(() -> {
+                    // Show a dialog or list to allow the user to select a saved search term
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DictionaryActivity.this);
+                    builder.setTitle("Saved Search Terms");
+                    builder.setItems(savedSearchTerms.toArray(new String[0]), (dialog, which) -> {
+                        // When a search term is selected, display its definitions
+                        String selectedTerm = savedSearchTerms.get(which);
+                        showDefinitionsForSavedTerm(selectedTerm);
+                    });
+                    builder.create().show();
+                });
+            });
+        });
+
+
+
+        binding.dictionaryView.setAdapter(myAdapter= new RecyclerView.Adapter<MyRowHolder>() {
              /**
               * This function creates a ViewHolder object. It represents a single row in the list
               * @param parent   The ViewGroup into which the new View will be added after it is bound to
@@ -192,6 +222,47 @@ public class DictionaryActivity extends AppCompatActivity {
 
 
     }
+
+    private void showDefinitionsForSavedTerm(String selectedTerm) {
+        // Retrieve definitions for the saved term from the database
+        Executor thread = Executors.newSingleThreadExecutor();
+        thread.execute(() -> {
+            List<DictionaryData> savedDefinitions = mDAO.getAllWordsWithSearchTerm(selectedTerm);
+            runOnUiThread(() -> {
+                // Display definitions to the user
+                if (!savedDefinitions.isEmpty()) {
+                    // Show a dialog or list to display definitions
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DictionaryActivity.this);
+                    builder.setTitle("Definitions for " + selectedTerm);
+                    builder.setItems(savedDefinitions.toArray(new String[0]), (dialog, which) -> {
+                        // When a definition is selected, ask for confirmation to delete it
+                        confirmDeleteDefinition(savedDefinitions.get(which));
+                    });
+                    builder.create().show();
+                } else {
+                    Toast.makeText(DictionaryActivity.this, "No definitions found for " + selectedTerm, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
+
+    private void confirmDeleteDefinition(DictionaryData dictionaryData) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Delete");
+        builder.setMessage("Are you sure you want to delete this definition?");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            // Delete the definition from the database
+            Executor thread = Executors.newSingleThreadExecutor();
+            thread.execute(() -> {
+                mDAO.deleteWord(dictionaryData);
+                runOnUiThread(() -> Toast.makeText(DictionaryActivity.this, "Definition deleted", Toast.LENGTH_SHORT).show());
+            });
+        });
+        builder.setNegativeButton("No", null);
+        builder.create().show();
+    }
+
+
 
     /**
      * Sends request to Dictionary API and fetches the definitions related to the word entered by user
