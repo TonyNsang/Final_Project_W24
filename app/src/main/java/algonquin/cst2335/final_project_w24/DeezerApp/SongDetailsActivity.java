@@ -1,10 +1,12 @@
 package algonquin.cst2335.final_project_w24.DeezerApp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,19 +27,49 @@ public class SongDetailsActivity extends AppCompatActivity {
         TextView durationTextView = findViewById(R.id.durationTextView);
         Button saveSongButton = findViewById(R.id.saveSongButton);
 
-        // Retrieve and display the song details from the intent
-        Intent intent = getIntent();
-        songTitleTextView.setText(intent.getStringExtra("title"));
-        albumNameTextView.setText(intent.getStringExtra("albumName"));
-        durationTextView.setText(intent.getStringExtra("duration"));
 
-        String albumCoverUrl = intent.getStringExtra("albumCover");
-        Glide.with(this).load(albumCoverUrl).into(albumCoverImageView);
+
+
+        // Retrieve data from intent
+        Intent intent = getIntent();
+        String songTitle = intent.getStringExtra("songTitle");
+        String albumName = intent.getStringExtra("albumTitle");
+        String duration = intent.getStringExtra("duration");
+        String albumCoverUrl = intent.getStringExtra("coverImage");
+
+
+        // Update UI with data
+        songTitleTextView.setText(songTitle);
+        albumNameTextView.setText(albumName);
+        durationTextView.setText(duration);
+
+
+
+
+        // Use Glide to load the album cover image, if URL is provided
+//        if (albumCoverUrl != null && !albumCoverUrl.isEmpty()) {
+//            Glide.with(this).load(albumCoverUrl).into(albumCoverImageView);
+//        }
+        Glide.with(this)
+                .load(albumCoverUrl)
+                .placeholder(R.drawable.deezersong)
+                .error(R.drawable.error_image)
+                .into(albumCoverImageView);
+
 
         // Handle save button click
         saveSongButton.setOnClickListener(view -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            myEdit.putString("songTitle", songTitle);
+            myEdit.apply();
+            Toast.makeText(this, "Song saved", Toast.LENGTH_SHORT).show();
 
         });
+
+
+
+//
 
 
     }

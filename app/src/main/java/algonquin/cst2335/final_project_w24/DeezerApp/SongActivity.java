@@ -56,6 +56,11 @@ public class SongActivity extends AppCompatActivity {
         SongsAdapter.OnItemClickListener listener = song -> {
             Intent intent = new Intent(SongActivity.this, SongDetailsActivity.class);
             intent.putExtra("songId", song.getId()); // Replace "getId()" with actual method to retrieve ID
+            intent.putExtra("songTitle", song.getTitle());
+            intent.putExtra("albumTitle", song.getAlbum().getTitle());
+            intent.putExtra("duration", String.valueOf(song.getDuration())); // Assuming `getDuration` returns a value you can convert to String
+            intent.putExtra("coverImage", song.getAlbum().getCover()); // Ensure you have such a method or adjust according to your data model
+
             startActivity(intent);
         };
         songsAdapter = new SongsAdapter(LayoutInflater.from(this), songList, listener);
