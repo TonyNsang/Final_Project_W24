@@ -1,16 +1,33 @@
 package algonquin.cst2335.final_project_w24.Dictionary;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 
+/**
+ * Object class to model the words and its definitions
+ * Represents a Table in the Database to store the words and its definitions
+ */
+@Entity
 public class DictionaryData {
    /**
     * search Term
     */
+   @ColumnInfo(name = "searchTerm")
    private String searchTerm;
    /**
     * definitions of the term
     */
+   @ColumnInfo(name = "definitionsOfTerm")
    private ArrayList<String> definitionsOfTerm;
+
+   @NonNull
+   @PrimaryKey(autoGenerate = true)
+   @ColumnInfo(name="id")
+   public int id;
 
 
    public String getSearchTerm() {

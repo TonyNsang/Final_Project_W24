@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+import androidx.room.Room;
 
 
 import android.content.Context;
@@ -74,6 +75,11 @@ public class DictionaryActivity extends AppCompatActivity {
      * Client Request to server
      */
      RequestQueue requestQueue;
+
+    /**
+     * DAO for DictionaryDatabase
+     */
+    DictionaryDAO mDAO;
     /**
      * On create function to load the Activities layout inclusing widgets
      * @param savedInstanceState If the activity is being re-initialized after
@@ -85,18 +91,22 @@ public class DictionaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.w("DictionaryActivity", "In OnCreate()-widget");
+        //ViewModel for SeachText
         model = new ViewModelProvider(this).get(DictionaryViewModel.class);
 
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
-
-
         setContentView(binding.getRoot());
 
+        //Setting Toolbar
         Toolbar toolbar = binding.myToolbar;
         setSupportActionBar(toolbar);
 
+        //Setting Layout for the recycleView
         binding.dictionaryView.setLayoutManager(new LinearLayoutManager(this));
 
+        //Open the Database
+        DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
+        mDAO = db.stDAO();
 
         //Shared Preferences for Search Term in edit text
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);

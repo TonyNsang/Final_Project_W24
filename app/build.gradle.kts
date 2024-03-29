@@ -42,8 +42,13 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    //Volley Library
+    //Volley Library - Tony
     implementation("com.android.volley:volley:1.2.1")
+
+    //Room Database dependencies - Tony
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     // Retrofit and Gson
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
