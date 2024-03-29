@@ -28,7 +28,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Add DictionaryActivity declaration -->
+        
+        <activity android:name=".DeezerApp.SongDetailsActivity">
+        </activity>
+
         <activity 
                   android:name=".Dictionary.DictionaryActivity"
             android:exported="false"/>
@@ -38,6 +41,7 @@
 
             <!-- intent-filter and other configurations -->
         </activity>
+
 
        <activity
            android:name=".DeezerApp.SongActivity">

@@ -67,6 +67,14 @@ dependencies {
     // Lifecycle extensions
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
+
+    // OkHttp for network requests
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+    // Gson for JSON parsing
+    implementation ("com.google.code.gson:gson:2.8.6")
+
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation ("com.google.code.gson:gson:2.8.6")
 }
 
 fun kapt(s: String) {

@@ -8,10 +8,17 @@
     <string name="app4_name">Deezer Song</string>
     <string name="introduce_message">WELCOME! \n Please choose your point of action</string>
     <string name="error_msg">Error fetching definitions</string>
+
+    <string name="enter_artist_name">Enter Artist Name</string>
+    <string name="search_hint">Search Hint</string>
+    <string name="search_button">Search Button</string>
+    <string name="spoonacular_api_key">Spoonacular_api_key</string>
+
     <string name="search_hint" />
     <string name="search_button" />
     <string name="spoonacular_api_key" />
   <string name="enter_artist_name">Enter Artist Name</string>
     <string name="save">Save</string>
+
 
 </resources>

@@ -9,5 +9,8 @@
     <string name="app4_name">أغنية ديزر</string>
     <string name="introduce_message">مرحباً! الرجاء اختيار نقطة العمل الخاصة بك</string>
     <string name="error_msg">حدث خطأ أثناء جلب التعريفات</string>
+    <string name="search_hint">تلميح البحث</string>
+    <string name="search_button">زر البحث</string>
+    <string name="spoonacular_api_key">مفتاح API ملعقة</string>
     <string name="enter_artist_name">أدخل اسم الفنان</string>
 </resources>
