@@ -67,6 +67,7 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.0")
     // Gson for JSON parsing
     implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.google.code.gson:gson:2.8.8")
 
 
 

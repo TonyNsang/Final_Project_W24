@@ -13,6 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.reflect.TypeToken;
+
 import algonquin.cst2335.final_project_w24.R;
 
 public class SongDetailsActivity extends AppCompatActivity {
@@ -29,6 +35,7 @@ public class SongDetailsActivity extends AppCompatActivity {
         Button saveSongButton = findViewById(R.id.saveSongButton);
 
 
+        Button favoriteBtn = findViewById(R.id.favorite_btn);
 
 
         // Retrieve data from intent
@@ -47,7 +54,7 @@ public class SongDetailsActivity extends AppCompatActivity {
 
 
 
-        // Use Glide to load the album cover image, if URL is provided
+        // Use Glide to load the album cover image
 //        if (albumCoverUrl != null && !albumCoverUrl.isEmpty()) {
 //            Glide.with(this).load(albumCoverUrl).into(albumCoverImageView);
 //        }
@@ -64,14 +71,30 @@ public class SongDetailsActivity extends AppCompatActivity {
             String trackJson = gson.toJson(trackDetails);
 
             SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+            String favoritesJson = sharedPreferences.getString("favorites", null);
+            Type type = new TypeToken<ArrayList<TrackFavoriteDetails>>() {}.getType();
+            List<TrackFavoriteDetails> favoritesList = gson.fromJson(favoritesJson, type);
+
+            // If there are no favorites yet, initialize the list
+            if (favoritesList == null) {
+                favoritesList = new ArrayList<>();
+            }
+            // Add the new favorite and save the updated list
+            favoritesList.add(trackDetails);
+            String updatedFavoritesJson = gson.toJson(favoritesList);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("favoriteTrack", trackJson);
+            editor.putString("favorites", updatedFavoritesJson);
             editor.apply();
 
             Toast.makeText(SongDetailsActivity.this, "Track saved", Toast.LENGTH_SHORT).show();
+
         });
 
-
+        //click listener for favorite_btn
+        favoriteBtn.setOnClickListener(view -> {
+            Intent favoritesIntent = new Intent(SongDetailsActivity.this, FavoritesActivity.class);
+            startActivity(favoritesIntent);
+        });
 
 
 //
