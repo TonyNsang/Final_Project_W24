@@ -79,4 +79,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             deleteButton = itemView.findViewById(R.id.button);
         }
     }
+    public TrackFavoriteDetails getItem(int position) {
+        return favoritesList.get(position);
+    }
 }
