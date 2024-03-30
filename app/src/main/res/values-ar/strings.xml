@@ -3,6 +3,7 @@
     <string name="app_name">المشروع النهائي W24</string>
     <string name="search">البحث</string>
     <string name="save">العناصر المحفوظة</string>
+    <string name="saveItems">"العناصر المحفوظة "</string>
     <string name="app1_name">العناصر المحفوظة</string>
     <string name="app2_name">وصفة الطعام</string>
     <string name="app3_name">قاموس</string>
