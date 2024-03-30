@@ -315,6 +315,7 @@ public class DictionaryActivity extends AppCompatActivity {
                 },
                 error -> {
                     Log.e(TAG, "Error fetching data", error);
+                    Toast.makeText(DictionaryActivity.this, "Sorry word does not exist", Toast.LENGTH_SHORT).show();
                 }
         );
 
@@ -380,7 +381,7 @@ public class DictionaryActivity extends AppCompatActivity {
                     "1. Enter a word to look up the definition.\n" +
                     "2. Definitions will be displayed in a RecyclerView.\n" +
                     "3. You can save search terms and definitions locally.\n" +
-                    "4. Use the 'View Saved Terms' button to view and delete saved terms.\n" +
+                    "4. Use the 'Saved Items' button to view and delete saved terms.\n" +
                     "5. SharedPreferences will save your last search term.");
             builder.setPositiveButton("OK", ((dialog, click) ->{} )).create().show();
             return true;
