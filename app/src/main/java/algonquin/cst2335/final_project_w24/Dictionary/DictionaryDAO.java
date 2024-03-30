@@ -20,6 +20,10 @@ public interface DictionaryDAO {
     @Query("SELECT * FROM DictionaryData WHERE id = :id")
     DictionaryData getWordById(long id);
 
+    @Query("SELECT * FROM DictionaryData WHERE searchTerm = :searchTerm")
+    List<DictionaryData> getAllWordsWithSearchTerm(String searchTerm);
+
+
     @Delete
     void deleteWord(DictionaryData m);
 }
