@@ -37,7 +37,18 @@
 
             <!-- intent-filter and other configurations -->
         </activity>
+
+
+
+       <activity
+           android:name=".DeezerApp.SongActivity">
+       </activity>
+        <activity android:name=".DeezerApp.FavoritesActivity"></activity>
+
+
+
         <activity android:name=".DeezerApp.SongActivity"></activity>
+
     </application>
 
 </manifest>
