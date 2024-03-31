@@ -23,9 +23,10 @@ public interface DictionaryDAO {
     @Query("SELECT * FROM DictionaryData WHERE searchTerm = :searchTerm")
     List<DictionaryData> getAllWordsWithSearchTerm(String searchTerm);
 
+    @Query("DELETE FROM DictionaryData WHERE searchTerm = :searchTerm AND definitionsOfTerm = :definition")
+    void deleteDefinition(String searchTerm, String definition);
 
     @Delete
     void deleteWord(DictionaryData m);
-    @Delete
-    void deleteDefinition(DictionaryData definition);
+
 }

@@ -136,19 +136,19 @@ public class DictionaryActivity extends AppCompatActivity {
 
         //OnClick listener for save button
         binding.save.setOnClickListener(click -> {
-            // Iterate over the list of wordAndDefinitions to save each entry
-            Executor thread = Executors.newSingleThreadExecutor();
-            thread.execute(() -> {
-                // Save the data object
-                mDAO.insertWord(data);
-
-                runOnUiThread(() -> Toast.makeText(DictionaryActivity.this, "Word and Definitions have been saved", Toast.LENGTH_SHORT).show());
-            });
+            if (data != null) {
+                Executor thread = Executors.newSingleThreadExecutor();
+                thread.execute(() -> {
+                    mDAO.insertWord(data);
+                    runOnUiThread(() -> Toast.makeText(DictionaryActivity.this, "Word and Definitions have been saved", Toast.LENGTH_SHORT).show());
+                });
+            } else {
+                Toast.makeText(this, "No data to save", Toast.LENGTH_SHORT).show();
+            }
         });
 
 
         binding.savedButton.setOnClickListener(click -> {
-            // Retrieve all saved search terms from the database
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
                 List<DictionaryData> savedWords = mDAO.getAllWords();
@@ -157,21 +157,34 @@ public class DictionaryActivity extends AppCompatActivity {
                     savedSearchTerms.add(word.getSearchTerm());
                 }
                 runOnUiThread(() -> {
-                    // Show a dialog or list to allow the user to select a saved search term
                     AlertDialog.Builder builder = new AlertDialog.Builder(DictionaryActivity.this);
                     builder.setTitle("Saved Search Terms");
                     builder.setItems(savedSearchTerms.toArray(new String[0]), (dialog, cl) -> {
-                        // When a search term is selected launch SavedWordsActivity to display its definitions
                         String selectedTerm = savedSearchTerms.get(cl);
-//                        showDefinitionsForSavedTerm(selectedTerm);
-                        Intent intent = new Intent(DictionaryActivity.this, SavedWordsActivity.class);
-                        intent.putExtra("selected_word", selectedTerm);
-                        startActivity(intent);
+
+                        // Retrieve definitions for the selected term in another thread
+                        Executor fetchThread = Executors.newSingleThreadExecutor();
+                        fetchThread.execute(() -> {
+                            // Retrieve definitions for the selected term
+                            List<DictionaryData> selectedDefinitions = mDAO.getAllWordsWithSearchTerm(selectedTerm);
+                            ArrayList<String> definitions = new ArrayList<>();
+                            for (DictionaryData data : selectedDefinitions) {
+                                definitions.addAll(data.getDefinitionsOfTerm());
+                            }
+
+                            // Start SavedWordsActivity with selected word and definitions
+                            Intent intent = new Intent(DictionaryActivity.this, SavedWordsActivity.class);
+                            intent.putExtra("selected_word", selectedTerm);
+                            intent.putStringArrayListExtra("definitions", definitions);
+                            startActivity(intent);
+                        });
                     });
                     builder.create().show();
                 });
             });
         });
+
+
 
 
 
@@ -218,48 +231,7 @@ public class DictionaryActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
-    private void showDefinitionsForSavedTerm(String selectedTerm) {
-        // Retrieve definitions for the saved term from the database
-        Executor thread = Executors.newSingleThreadExecutor();
-        thread.execute(() -> {
-            List<DictionaryData> savedDefinitions = mDAO.getAllWordsWithSearchTerm(selectedTerm);
-            runOnUiThread(() -> {
-                // Display definitions to the user
-                if (!savedDefinitions.isEmpty()) {
-                    // Construct a formatted string with all definitions
-                    StringBuilder definitionsBuilder = new StringBuilder();
-                    for (DictionaryData savedDefinition : savedDefinitions) {
-                        definitionsBuilder.append("Word: ").append(savedDefinition.getSearchTerm()).append("\n");
-                        definitionsBuilder.append("Definitions:\n");
-                        for (String definition : savedDefinition.getDefinitionsOfTerm()) {
-                            definitionsBuilder.append("- ").append(definition).append("\n");
-                        }
-                        definitionsBuilder.append("\n");
-
-                        // Add delete button
-                        definitionsBuilder.append("[Delete]");
-                        definitionsBuilder.append("\n\n");
-                    }
-
-                    // Show the definitions in an AlertDialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(DictionaryActivity.this);
-                    builder.setTitle("Definitions for " + selectedTerm);
-                    builder.setMessage(definitionsBuilder.toString());
-                    builder.setPositiveButton("OK", null);
-                    builder.create().show();
-                } else {
-                    Toast.makeText(DictionaryActivity.this, "No definitions found for " + selectedTerm, Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
-    }
-
-
-
-
 
 
 

@@ -36,30 +36,27 @@ public class SavedWordsActivity extends AppCompatActivity {
      */
     DictionaryDAO mDAO;
 
+    String selectedWord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_words);
 
-        // Initialize data object
-        data = new DictionaryData();
-
-        // Retrieve selected word and definitions from Intent
-        String selectedWord = getIntent().getStringExtra("selected_word");
+        selectedWord = getIntent().getStringExtra("selected_word");
         ArrayList<String> definitions = getIntent().getStringArrayListExtra("definitions");
 
-        // Display selected word
-        TextView wordTextView = findViewById(R.id.savedWord);
-        wordTextView.setText(selectedWord);
+        if (definitions != null) {
+            TextView wordTextView = findViewById(R.id.savedWord);
+            wordTextView.setText(selectedWord);
 
-        RecyclerView recyclerView = findViewById(R.id.savedDefinitions);
+            RecyclerView recyclerView = findViewById(R.id.savedDefinitions);
 
-        DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
-        mDAO = db.stDAO();
+            DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
+            mDAO = db.stDAO();
 
-        // Set data to DictionaryData object
-        data.setSearchTerm(selectedWord);
-        data.setDefinitionsOfTerm(definitions);
+            data.setSearchTerm(selectedWord);
+            data.setDefinitionsOfTerm(definitions);
 
         recyclerView.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder2>() {
             /**
@@ -88,13 +85,11 @@ public class SavedWordsActivity extends AppCompatActivity {
                 String definition = definitions.get(position);
                 holder.definitionText.setText(definition);
 
-                // Add click listener to delete button
+                // On click listener to delete button
                 holder.deleteButton.setOnClickListener(v -> {
-                    DictionaryData definitionData = data; // Get the DictionaryData object corresponding to the definition
-                    confirmDeleteDefinition(definitionData);
+                    confirmDeleteDefinition(definition);
                 });
             }
-
 
             /**
              * This function just returns an int specifying how many items to draw.
@@ -107,7 +102,11 @@ public class SavedWordsActivity extends AppCompatActivity {
         });
 
         myAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(this, "No definitions found for " + selectedWord, Toast.LENGTH_SHORT).show();
+        }
     }
+
 
     /**
      * an object for representing everything that goes on a row in the list
@@ -123,7 +122,7 @@ public class SavedWordsActivity extends AppCompatActivity {
         }
     }
 
-    private void confirmDeleteDefinition(DictionaryData definitionData) {
+    private void confirmDeleteDefinition(String definition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Delete");
         builder.setMessage("Are you sure you want to delete this definition?");
@@ -131,11 +130,11 @@ public class SavedWordsActivity extends AppCompatActivity {
             // Delete the definition from the database
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
-                mDAO.deleteDefinition(definitionData);
+                mDAO.deleteDefinition(selectedWord, definition);
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Definition deleted", Toast.LENGTH_SHORT).show();
                     // Remove the deleted definition from the list and notify adapter
-                    data.getDefinitionsOfTerm().remove(definitionData);
+                    data.getDefinitionsOfTerm().remove(definition);
                     myAdapter.notifyDataSetChanged();
                 });
             });
@@ -143,5 +142,4 @@ public class SavedWordsActivity extends AppCompatActivity {
         builder.setNegativeButton("No", null);
         builder.create().show();
     }
-
 }
