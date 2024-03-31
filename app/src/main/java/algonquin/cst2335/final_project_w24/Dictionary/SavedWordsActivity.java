@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
@@ -29,7 +30,7 @@ public class SavedWordsActivity extends AppCompatActivity {
     /**
      * DTO
      */
-    DictionaryData data = new DictionaryData();
+    DictionaryData data;
 
     /**
      * DAO for DictionaryDatabase
@@ -46,18 +47,22 @@ public class SavedWordsActivity extends AppCompatActivity {
         selectedWord = getIntent().getStringExtra("selected_word");
         ArrayList<String> definitions = getIntent().getStringArrayListExtra("definitions");
 
+        TextView wordTextView = findViewById(R.id.savedWord);
+        wordTextView.setText(selectedWord);
+
         if (definitions != null) {
-            TextView wordTextView = findViewById(R.id.savedWord);
-            wordTextView.setText(selectedWord);
+
 
             RecyclerView recyclerView = findViewById(R.id.savedDefinitions);
 
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
             DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
             mDAO = db.stDAO();
-
-            data.setSearchTerm(selectedWord);
-            data.setDefinitionsOfTerm(definitions);
-
+            Executor thread = Executors.newSingleThreadExecutor();
+            thread.execute(() -> {
+                        data = mDAO.getWordBySearchTerm(selectedWord);
+                    });
         recyclerView.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder2>() {
             /**
              * This function creates a ViewHolder object. It represents a single row in the list
