@@ -26,4 +26,6 @@ public interface DictionaryDAO {
 
     @Delete
     void deleteWord(DictionaryData m);
+    @Delete
+    void deleteDefinition(DictionaryData definition);
 }

@@ -7,9 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.room.Room;
-
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,16 +24,12 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-
 import com.android.volley.toolbox.JsonArrayRequest;
-
 import com.android.volley.toolbox.Volley;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +51,7 @@ import algonquin.cst2335.final_project_w24.databinding.ActivityDictionaryBinding
  */
 public class DictionaryActivity extends AppCompatActivity {
     private static final String TAG = "DictionaryActivity";
+
     /**
      * Viewbinding variable
      */
@@ -80,7 +75,7 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Client Request to server
      */
-     RequestQueue requestQueue;
+    RequestQueue requestQueue;
 
     /**
      * DAO for DictionaryDatabase
@@ -90,6 +85,7 @@ public class DictionaryActivity extends AppCompatActivity {
      * DTO
      */
     DictionaryData data;
+
     /**
      * On create function to load the Activities layout inclusing widgets
      * @param savedInstanceState If the activity is being re-initialized after
@@ -102,7 +98,7 @@ public class DictionaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.w("DictionaryActivity", "In OnCreate()-widget");
 
-        //ViewModel for SeachText
+        //ViewModel for SearchText
         model = new ViewModelProvider(this).get(DictionaryViewModel.class);
 
         binding = ActivityDictionaryBinding.inflate(getLayoutInflater());
@@ -143,8 +139,8 @@ public class DictionaryActivity extends AppCompatActivity {
             // Iterate over the list of wordAndDefinitions to save each entry
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
-                    // Save the data object
-                    mDAO.insertWord(data);
+                // Save the data object
+                mDAO.insertWord(data);
 
                 runOnUiThread(() -> Toast.makeText(DictionaryActivity.this, "Word and Definitions have been saved", Toast.LENGTH_SHORT).show());
             });
@@ -164,10 +160,13 @@ public class DictionaryActivity extends AppCompatActivity {
                     // Show a dialog or list to allow the user to select a saved search term
                     AlertDialog.Builder builder = new AlertDialog.Builder(DictionaryActivity.this);
                     builder.setTitle("Saved Search Terms");
-                    builder.setItems(savedSearchTerms.toArray(new String[0]), (dialog, which) -> {
-                        // When a search term is selected, display its definitions
-                        String selectedTerm = savedSearchTerms.get(which);
-                        showDefinitionsForSavedTerm(selectedTerm);
+                    builder.setItems(savedSearchTerms.toArray(new String[0]), (dialog, cl) -> {
+                        // When a search term is selected launch SavedWordsActivity to display its definitions
+                        String selectedTerm = savedSearchTerms.get(cl);
+//                        showDefinitionsForSavedTerm(selectedTerm);
+                        Intent intent = new Intent(DictionaryActivity.this, SavedWordsActivity.class);
+                        intent.putExtra("selected_word", selectedTerm);
+                        startActivity(intent);
                     });
                     builder.create().show();
                 });
@@ -177,48 +176,47 @@ public class DictionaryActivity extends AppCompatActivity {
 
 
         binding.dictionaryView.setAdapter(myAdapter= new RecyclerView.Adapter<MyRowHolder>() {
-             /**
-              * This function creates a ViewHolder object. It represents a single row in the list
-              * @param parent   The ViewGroup into which the new View will be added after it is bound to
-              *                 an adapter position.
-              * @param viewType The view type of the new View.
-              * @return MyRowHolder
-              */
-             @NonNull
-             @Override
-             public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                 View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_definition, parent, false);
-                 return new MyRowHolder(itemView);
-             }
+            /**
+             * This function creates a ViewHolder object. It represents a single row in the list
+             * @param parent   The ViewGroup into which the new View will be added after it is bound to
+             *                 an adapter position.
+             * @param viewType The view type of the new View.
+             * @return MyRowHolder
+             */
+            @NonNull
+            @Override
+            public MyRowHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.word_definition, parent, false);
+                return new MyRowHolder(itemView);
+            }
 
-             /**
-              * This initializes a ViewHolder to go at the row specified by the position parameter.
-              * @param holder   The ViewHolder which should be updated to represent the contents of the
-              *                 item at the given position in the data set.
-              * @param position The position of the item within the adapter's data set.
-              */
-             @Override
-             public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
-                 DictionaryData currentTerm = wordAndDefinitions.get(position);
+            /**
+             * This initializes a ViewHolder to go at the row specified by the position parameter.
+             * @param holder   The ViewHolder which should be updated to represent the contents of the
+             *                 item at the given position in the data set.
+             * @param position The position of the item within the adapter's data set.
+             */
+            @Override
+            public void onBindViewHolder(@NonNull MyRowHolder holder, int position) {
+                DictionaryData currentTerm = wordAndDefinitions.get(position);
                 holder.searchTermText.setText(currentTerm.getSearchTerm());
 
-                 holder.definitionText.setText(formatDefinitions(currentTerm.getDefinitionsOfTerm()));
+                holder.definitionText.setText(formatDefinitions(currentTerm.getDefinitionsOfTerm()));
+            }
 
-             }
+            /**
+             * This function just returns an int specifying how many items to draw.
+             * @return int
+             */
+            @Override
+            public int getItemCount() {
+                return wordAndDefinitions.size();
+            }
 
-             /**
-              * This function just returns an int specifying how many items to draw.
-              * @return int
-              */
-             @Override
-             public int getItemCount() {
-                 return wordAndDefinitions.size();
-             }
-
-             public int getItemViewType(int position){
-                 return 0;
-             }
-         });
+            public int getItemViewType(int position){
+                return 0;
+            }
+        });
 
 
     }
@@ -231,13 +229,26 @@ public class DictionaryActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 // Display definitions to the user
                 if (!savedDefinitions.isEmpty()) {
-                    // Show a dialog or list to display definitions
+                    // Construct a formatted string with all definitions
+                    StringBuilder definitionsBuilder = new StringBuilder();
+                    for (DictionaryData savedDefinition : savedDefinitions) {
+                        definitionsBuilder.append("Word: ").append(savedDefinition.getSearchTerm()).append("\n");
+                        definitionsBuilder.append("Definitions:\n");
+                        for (String definition : savedDefinition.getDefinitionsOfTerm()) {
+                            definitionsBuilder.append("- ").append(definition).append("\n");
+                        }
+                        definitionsBuilder.append("\n");
+
+                        // Add delete button
+                        definitionsBuilder.append("[Delete]");
+                        definitionsBuilder.append("\n\n");
+                    }
+
+                    // Show the definitions in an AlertDialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(DictionaryActivity.this);
                     builder.setTitle("Definitions for " + selectedTerm);
-                    builder.setItems(savedDefinitions.toArray(new String[0]), (dialog, which) -> {
-                        // When a definition is selected, ask for confirmation to delete it
-                        confirmDeleteDefinition(savedDefinitions.get(which));
-                    });
+                    builder.setMessage(definitionsBuilder.toString());
+                    builder.setPositiveButton("OK", null);
                     builder.create().show();
                 } else {
                     Toast.makeText(DictionaryActivity.this, "No definitions found for " + selectedTerm, Toast.LENGTH_SHORT).show();
@@ -246,21 +257,9 @@ public class DictionaryActivity extends AppCompatActivity {
         });
     }
 
-    private void confirmDeleteDefinition(DictionaryData dictionaryData) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirm Delete");
-        builder.setMessage("Are you sure you want to delete this definition?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            // Delete the definition from the database
-            Executor thread = Executors.newSingleThreadExecutor();
-            thread.execute(() -> {
-                mDAO.deleteWord(dictionaryData);
-                runOnUiThread(() -> Toast.makeText(DictionaryActivity.this, "Definition deleted", Toast.LENGTH_SHORT).show());
-            });
-        });
-        builder.setNegativeButton("No", null);
-        builder.create().show();
-    }
+
+
+
 
 
 
@@ -339,6 +338,12 @@ public class DictionaryActivity extends AppCompatActivity {
             definitionText = itemView.findViewById(R.id.definitionText);
         }
     }
+
+    /**
+     * Formats definitions for display
+     * @param definitions List of definitions to be formatted
+     * @return Formatted string representing definitions
+     */
     private String formatDefinitions(ArrayList<String> definitions) {
         StringBuilder formattedDefinitions = new StringBuilder();
         for (String definition : definitions) {
@@ -370,10 +375,9 @@ public class DictionaryActivity extends AppCompatActivity {
             startActivity(sunPage);
             return true;
         } else if (item.getItemId() == R.id.songIcon) {
-                Intent songPage = new Intent(DictionaryActivity.this, SongActivity.class);
-                startActivity(songPage);
-                return true;
-
+            Intent songPage = new Intent(DictionaryActivity.this, SongActivity.class);
+            startActivity(songPage);
+            return true;
         } else if (item.getItemId() == R.id.help_Icon) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Help");
@@ -385,10 +389,8 @@ public class DictionaryActivity extends AppCompatActivity {
                     "5. SharedPreferences will save your last search term.");
             builder.setPositiveButton("OK", ((dialog, click) ->{} )).create().show();
             return true;
-        }else {
-
+        } else {
+            return false;
         }
-        return false;
     }
 }
-
