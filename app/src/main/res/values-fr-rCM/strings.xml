@@ -14,4 +14,5 @@
     <string name="search_hint">recherche_indice</string>
     <string name="search_button">bouton de recherche</string>
     <string name="spoonacular_api_key">clé API cuillère</string>
+    <string name="deleteDefinition">Supprimer</string>
 </resources>

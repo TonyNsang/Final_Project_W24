@@ -14,6 +14,7 @@
     <string name="search_button">Search Button</string>
     <string name="spoonacular_api_key">Spoonacular_api_key</string>
     <string name="save">Save</string>
+    <string name="deleteDefinition">Delete</string>
 
 
 </resources>
