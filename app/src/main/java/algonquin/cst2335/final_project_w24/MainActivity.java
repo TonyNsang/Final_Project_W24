@@ -1,15 +1,15 @@
 package algonquin.cst2335.final_project_w24;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import algonquin.cst2335.final_project_w24.Dictionary.DictionaryActivity;
 import algonquin.cst2335.final_project_w24.Recipe.RecipeActivity;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(dictionaryPage);
             return true;
        } else if (item.getItemId() == R.id.recipeIcon) {
-           Intent recipePage = new Intent(MainActivity.this, RecipeActivity.class);
+           Intent recipePage = new Intent(MainActivity.this,RecipeActivity.class);
            startActivity(recipePage);
            return true;
 //        } else if (item.getItemId() == R.id.songIcon) {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         }else {
 
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
 }

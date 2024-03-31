@@ -2,4 +2,14 @@
 <resources>
     <item name="titleTextView" type="id" />
     <item name="imageView" type="id" />
+    <item name="recipeImageView" type="id" />
+    <item name="recipeTitleTextView" type="id" />
+    <item name="recipeSummaryTextView" type="id" />
+    <item name="recipeSourceUrlTextView" type="id" />
+    <item name="imageView_food" type="id" />
+    <item name="textView_servings" type="id" />
+    <item name="textView_Likes" type="id" />
+    <item name="textView_time" type="id" />
+    <item name="textView_title" type="id" />
+    <item name="random_list_container" type="id" />
 </resources>

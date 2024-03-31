@@ -56,7 +56,7 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Array to store definitions of a word
      */
-    private ArrayList<String> definitions = new ArrayList<>();
+    private final ArrayList<String> definitions = new ArrayList<>();
     /**
      * RecycleView Adapter
      */
