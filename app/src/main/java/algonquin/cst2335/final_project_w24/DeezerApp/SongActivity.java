@@ -30,6 +30,7 @@ public class SongActivity extends AppCompatActivity {
 
     private EditText artistNameEditText;
     private Button searchButton;
+    private Button favoriteButton1;
     private RecyclerView songsRecyclerView;
     private SongsAdapter songsAdapter;
     private  ConstraintLayout layout;
@@ -50,6 +51,7 @@ public class SongActivity extends AppCompatActivity {
         artistNameEditText = findViewById(R.id.artistNameEditText);
         searchButton = findViewById(R.id.searchButton);
         songsRecyclerView = findViewById(R.id.songsRecyclerView);
+        favoriteButton1 = findViewById(R.id.favorite_btn1);
 
         // Setup RecyclerView
         songsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -78,6 +80,13 @@ public class SongActivity extends AppCompatActivity {
                 searchForArtistAndFetchTopTracks(artistName);
             }
 
+        });
+
+        // Set the OnClickListener for the favorite button
+        favoriteButton1.setOnClickListener(v -> {
+
+            Intent intent = new Intent(SongActivity.this, FavoritesActivity.class);
+            startActivity(intent);
         });
 
     }

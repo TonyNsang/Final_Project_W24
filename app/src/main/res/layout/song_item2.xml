@@ -42,7 +42,7 @@
         android:layout_width="93dp"
         android:layout_height="37dp"
         android:layout_marginTop="3dp"
-        android:backgroundTint="#150A0A"
+        android:backgroundTint="#C32929"
         android:text="Delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.94"
