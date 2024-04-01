@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,11 +22,16 @@ public interface DictionaryDAO {
     DictionaryData getWordById(long id);
 
     @Query("SELECT * FROM DictionaryData WHERE searchTerm = :searchTerm")
+   DictionaryData getWordBySearchTerm(String searchTerm);
+
+    @Query("SELECT * FROM DictionaryData WHERE searchTerm = :searchTerm")
     List<DictionaryData> getAllWordsWithSearchTerm(String searchTerm);
 
 
+    @Query("DELETE FROM DictionaryData WHERE searchTerm = :searchTerm AND definitionsOfTerm = :definition")
+    void deleteDefinition(String searchTerm, String definition);
+
     @Delete
     void deleteWord(DictionaryData m);
-    @Delete
-    void deleteDefinition(DictionaryData definition);
+
 }
