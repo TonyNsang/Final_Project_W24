@@ -14,9 +14,9 @@ import algonquin.cst2335.final_project_w24.R;
 
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
-    private List<String> favoriteLocations;
+    private List<FavoriteLocation> favoriteLocations;
 
-    public FavoritesAdapter(List<String> favoriteLocations) {
+    public FavoritesAdapter(List<FavoriteLocation> favoriteLocations) {
         this.favoriteLocations = favoriteLocations;
     }
 
@@ -29,7 +29,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textViewFavoriteLocation.setText(favoriteLocations.get(position));
+        holder.textViewFavoriteLocation.setText(favoriteLocations.get(position).getId());
     }
 
     @Override
