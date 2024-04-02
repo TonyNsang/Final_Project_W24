@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -21,7 +23,13 @@ import java.util.concurrent.Executors;
 
 import algonquin.cst2335.final_project_w24.R;
 
-public class SavedWordsActivity extends AppCompatActivity {
+/**
+ * purpose of the file: SavedDefinitionsActivity shows the definitions of the saved word where the user can delete a definition
+ * @author Tony Nsang
+ * lab section: 022
+ * creation date: March 28, 2023.
+ */
+public class SavedDefinitionsActivity extends AppCompatActivity {
     /**
      * RecycleView Adapter
      */
@@ -36,16 +44,26 @@ public class SavedWordsActivity extends AppCompatActivity {
      * DAO for DictionaryDatabase
      */
     DictionaryDAO mDAO;
-
+    /**
+     * Search Term from DictionaryActivity
+     */
     String selectedWord;
 
+    /**
+     * On Create Method to Load the SavedDefinitionsActivity
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_words);
+        setContentView(R.layout.activity_saved_definitions);
 
         selectedWord = getIntent().getStringExtra("selected_word");
         ArrayList<String> definitions = getIntent().getStringArrayListExtra("definitions");
+
 
         TextView wordTextView = findViewById(R.id.savedWord);
         wordTextView.setText(selectedWord);
@@ -59,6 +77,7 @@ public class SavedWordsActivity extends AppCompatActivity {
 
             DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
             mDAO = db.stDAO();
+
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
                         data = mDAO.getWordBySearchTerm(selectedWord);
@@ -92,7 +111,7 @@ public class SavedWordsActivity extends AppCompatActivity {
 
                 // On click listener to delete button
                 holder.deleteButton.setOnClickListener(v -> {
-                    confirmDeleteDefinition(definition);
+                    confirmDeleteDefinition(definition, position);
                 });
             }
 
@@ -127,24 +146,47 @@ public class SavedWordsActivity extends AppCompatActivity {
         }
     }
 
-    private void confirmDeleteDefinition(String definition) {
+    /**
+     * Method that shows an AlertDialog to confirm a deletion of a particular definition
+     * @param definition definition being deleted
+     * @param position the position of the definition in the recycleview
+     */
+    private void confirmDeleteDefinition(String definition, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Delete");
         builder.setMessage("Are you sure you want to delete this definition?");
         builder.setPositiveButton("Yes", (dialog, cl) -> {
-            // Delete the definition from the database
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
                 mDAO.deleteDefinition(selectedWord, definition);
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "Definition deleted", Toast.LENGTH_SHORT).show();
-                    // Remove the deleted definition from the list and notify adapter
-                    data.getDefinitionsOfTerm().remove(definition);
-                    myAdapter.notifyDataSetChanged();
+                    // Remove the deleted definition from the list
+                   String removed =  data.getDefinitionsOfTerm().remove(position);
+                    // Notify adapter about the deletion
+                    myAdapter.notifyItemRemoved(position);
+                    // Show Snackbar for undo option
+                    showUndoSnackbar(removed, position);
                 });
             });
         });
         builder.setNegativeButton("No", null);
         builder.create().show();
+    }
+
+    /**
+     * Method to show a SnackBar to display deletion message and the option to undo the deletion
+     * @param deletedDefinition deleted definition
+     * @param position position of the deleted definition in the ArrayList of definitions
+     */
+    private void showUndoSnackbar(String deletedDefinition, int position) {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                "Definition deleted", Snackbar.LENGTH_LONG);
+        snackbar.setAction("UNDO", v -> {
+            // Add the deleted definition back to the list
+            data.getDefinitionsOfTerm().add(position, deletedDefinition);
+            // Notify adapter about the addition
+            myAdapter.notifyItemInserted(position);
+        });
+        snackbar.show();
     }
 }
