@@ -15,4 +15,8 @@
     <string name="favorites">Favorites</string>
     <string name="lookup">Lookup</string>
     <string name="latitude">Latitude</string>
+    <string name="please_enter_latitude_and_longitude">Please enter latitude and longitude.</string>
+    <string name="error_occurred">"Error occurred: "</string>
+    <string name="sunrise">"Sunrise: "</string>
+    <string name="sunset">" - Sunset: "</string>
 </resources>

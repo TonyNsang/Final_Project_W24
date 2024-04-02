@@ -50,15 +50,15 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Room components
-    implementation("androidx.room:room-runtime:2.2.5")
-    annotationProcessor ("androidx.room:room-compiler:2.2.5")
-    kapt("androidx.room:room-compiler:2.2.5")
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
     // RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 
     // Material Design Components
-    implementation("com.google.android.material:material:1.2.0")
+    implementation("com.google.android.material:material:1.11.0")
 
     // Lifecycle extensions
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")

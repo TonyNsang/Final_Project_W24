@@ -29,7 +29,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textViewFavoriteLocation.setText(favoriteLocations.get(position).getId());
+        FavoriteLocation location = favoriteLocations.get(position);
+        holder.textViewFavoriteLocation.setText("Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
     }
 
     @Override
