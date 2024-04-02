@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
@@ -49,6 +51,16 @@ public class SunActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sun);
+
+        // Inside onCreate() method
+        Toolbar toolbar = findViewById(R.id.myToolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true); // Enable the Up button
+            actionBar.setTitle("Sun Activity"); // Set title for the activity
+        }
 
         latitudeEditText = findViewById(R.id.editTextLatitude);
         longitudeEditText = findViewById(R.id.editTextLongitude);
@@ -112,6 +124,7 @@ public class SunActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void saveFavoriteLocation(FavoriteLocation favoriteLocation) {

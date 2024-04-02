@@ -1,4 +1,5 @@
 package algonquin.cst2335.final_project_w24.SunApp;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import algonquin.cst2335.final_project_w24.R;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.LocationViewHolder> {
 
     private List<FavoriteLocation> locations = new ArrayList<>();
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -41,15 +43,43 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Loca
         notifyDataSetChanged();
     }
 
+    public FavoriteLocation getItem(int position) {
+        return locations.get(position);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+
+        void onDeleteClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
     class LocationViewHolder extends RecyclerView.ViewHolder {
 
         private TextView latitudeTextView;
         private TextView longitudeTextView;
+        private View deleteButton;
 
         public LocationViewHolder(@NonNull View itemView) {
             super(itemView);
             latitudeTextView = itemView.findViewById(R.id.latitudeTextView);
             longitudeTextView = itemView.findViewById(R.id.longitudeTextView);
+            deleteButton = itemView.findViewById(R.id.locationButtonDelete);
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onDeleteClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }
