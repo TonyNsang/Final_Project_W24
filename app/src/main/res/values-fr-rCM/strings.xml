@@ -2,11 +2,30 @@
 <resources>
     <string name="app_name">Final_Project_W24</string>
     <string name="search">RECHERCHE</string>
-    <string name="save">ELEMENT ENREGISTRE</string>
+    <string name="saveItems">ELEMENT ENREGISTRE</string>
+    <string name="save">ENREGISTRE</string>
     <string name="app1_name">Soleil</string>
     <string name="app2_name">Recipe</string>
     <string name="app3_name">Dictionaire</string>
     <string name="app4_name">Deezer Son</string>
     <string name="introduce_message">Bienvenue! Veuillez choisir votre point d\'action</string>
     <string name="error_msg">Erreur lors de la récupération des définitions</string>
+
+    <string name="sunrise_sunset">Sunrise: ---- Sunset: ----</string>
+    <string name="delete">Delete</string>
+    <string name="save_location">Save Location</string>
+    <string name="favorites">Favorites</string>
+    <string name="lookup">Lookup</string>
+    <string name="latitude">Latitude</string>
+    <string name="please_enter_latitude_and_longitude">Please enter latitude and longitude.</string>
+    <string name="error_occurred">"Error occurred: "</string>
+    <string name="sunrise">"Sunrise: "</string>
+    <string name="sunset">" - Sunset: "</string>
+
+    <string name="enter_artist_name">Entez le nom de l\'artiste</string>
+    <string name="search_hint">recherche_indice</string>
+    <string name="search_button">bouton de recherche</string>
+    <string name="spoonacular_api_key">clé API cuillère</string>
+    <string name="deleteDefinition">Supprimer</string>
+
 </resources>

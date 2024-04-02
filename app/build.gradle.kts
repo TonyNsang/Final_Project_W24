@@ -43,35 +43,59 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.activity:activity:1.8.0")
+
     implementation("com.google.android.gms:play-services-basement:18.3.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    //Volley Library
+    //Volley Library - Tony
     implementation("com.android.volley:volley:1.2.1")
+
+    //Room Database dependencies - Tony
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     // Retrofit and Gson
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Room components
-    implementation("androidx.room:room-runtime:2.2.5")
-    kapt("androidx.room:room-compiler:2.2.5")
+    implementation("androidx.room:room-runtime:2.6.1")
+
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
+
+
+    kapt("androidx.room:room-compiler:2.6.1")
 
     // RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 
     // Material Design Components
-    implementation("com.google.android.material:material:1.2.0")
+    implementation("com.google.android.material:material:1.11.0")
 
     // Lifecycle extensions
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
+
     dependencies {
         // ViewModel and LiveData
         implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
         implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+
+
+    // OkHttp for network requests
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+    // Gson for JSON parsing
+    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation ("com.google.code.gson:gson:2.8.8")
+
+
+
+}
+
 
         // Retrofit & Gson
         implementation ("com.squareup.retrofit2:retrofit:2.9.0")

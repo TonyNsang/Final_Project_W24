@@ -7,12 +7,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+
+import algonquin.cst2335.final_project_w24.DeezerApp.SongActivity;
+
 import algonquin.cst2335.final_project_w24.Dictionary.DictionaryActivity;
 import algonquin.cst2335.final_project_w24.Recipe.RecipeActivity;
+import algonquin.cst2335.final_project_w24.SunApp.SunActivity;
 import algonquin.cst2335.final_project_w24.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
         Button dictionaryBtn = variableBinding.dictionaryButton;
         Button songBtn = variableBinding.deezerButton;
         //SunRise App Activity
-        /*sunBtn.setOnClickListener(click -> {
-            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
+        sunBtn.setOnClickListener(click -> {
+            Intent songPage = new Intent(MainActivity.this, SunActivity.class);
             startActivity(songPage);
-        });*/
+        });
         //Recipe App activity
         recipeBtn.setOnClickListener(click->{
             Intent recipePage = new Intent(MainActivity.this, RecipeActivity.class);
@@ -50,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(dictionaryPage);
         });
         //DeezerSong App Activity
-        /*songBtn.setOnClickListener(click -> {
-            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
+        songBtn.setOnClickListener(click -> {
+            Intent songPage = new Intent(MainActivity.this, SongActivity.class);
             startActivity(songPage);
-        });*/
+        });
 
     }
 
@@ -74,10 +79,15 @@ public class MainActivity extends AppCompatActivity {
            Intent recipePage = new Intent(MainActivity.this,RecipeActivity.class);
            startActivity(recipePage);
            return true;
-//        } else if (item.getItemId() == R.id.songIcon) {
-//            Intent songPage = new Intent(MainActivity.this, SongSearch.class);
-//            startActivity(songPage);
-//            return true;
+        } else if (item.getItemId() == R.id.sunIcon) {
+            Intent sunPage = new Intent(MainActivity.this, SunActivity.class);
+            startActivity(sunPage);
+            return true;
+
+       } else if (item.getItemId() == R.id.songIcon) {
+           Intent songPage = new Intent(MainActivity.this, SongActivity.class);
+           startActivity(songPage);
+           return true;
         }else {
 
         }
