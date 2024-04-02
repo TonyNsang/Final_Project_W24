@@ -166,11 +166,13 @@ public class DictionaryActivity extends AppCompatActivity {
                         Executor fetchThread = Executors.newSingleThreadExecutor();
                         fetchThread.execute(() -> {
                             // Retrieve definitions for the selected term
-                            List<DictionaryData> selectedDefinitions = mDAO.getAllWordsWithSearchTerm(selectedTerm);
-                            ArrayList<String> definitions = new ArrayList<>();
-                            for (DictionaryData data : selectedDefinitions) {
-                                definitions.addAll(data.getDefinitionsOfTerm());
-                            }
+                            DictionaryData haha = mDAO.getWordBySearchTerm(selectedTerm);
+                            ArrayList<String> selectedDefinitions = haha.getDefinitionsOfTerm();
+                            ArrayList<String> definitions = selectedDefinitions;
+//                            ArrayList<String> definitions = new ArrayList<>();
+//                            for (ArrayList  : definitions) {
+//                                definitions.add(selectedDefinitions);
+//                            }
 
                             // Start SavedWordsActivity with selected word and definitions
                             Intent intent = new Intent(DictionaryActivity.this, SavedWordsActivity.class);

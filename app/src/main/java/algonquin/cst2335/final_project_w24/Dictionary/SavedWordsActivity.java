@@ -47,6 +47,7 @@ public class SavedWordsActivity extends AppCompatActivity {
         selectedWord = getIntent().getStringExtra("selected_word");
         ArrayList<String> definitions = getIntent().getStringArrayListExtra("definitions");
 
+
         TextView wordTextView = findViewById(R.id.savedWord);
         wordTextView.setText(selectedWord);
 
@@ -59,6 +60,7 @@ public class SavedWordsActivity extends AppCompatActivity {
 
             DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
             mDAO = db.stDAO();
+
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
                         data = mDAO.getWordBySearchTerm(selectedWord);
@@ -87,7 +89,7 @@ public class SavedWordsActivity extends AppCompatActivity {
             @Override
             public void onBindViewHolder(@NonNull MyRowHolder2 holder, int position) {
                 // Bind data to views
-                String definition = definitions.get(position);
+                String definition = data.getDefinitionsOfTerm().get(position);
                 holder.definitionText.setText(definition);
 
                 // On click listener to delete button
