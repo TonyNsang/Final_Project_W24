@@ -41,5 +41,21 @@
             android:layout_marginTop="8dp"
             android:textSize="16sp"
             android:text="Source URL" />
+
+        <Button
+            android:id="@+id/button_save_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:text="Save Recipe" />
+        <Button
+            android:id="@+id/button_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Favorite"
+            android:layout_below="@id/recipeSourceUrlTextView"
+            android:layout_marginTop="16dp" />
     </LinearLayout>
 </ScrollView>

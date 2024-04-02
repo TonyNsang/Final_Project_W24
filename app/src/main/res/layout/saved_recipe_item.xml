@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:layout_height="match_parent">
+    <!-- This FrameLayout will hold the fragment -->
+
 
     <!-- TextViews for displaying recipe details -->
     <TextView
         android:id="@+id/text_view_recipe_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/text_view_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -22,32 +29,27 @@
         android:textSize="14sp" />
 
     <!-- Button to view details -->
-    <Button
-        android:id="@+id/button_view_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_recipe_description"
-        android:layout_marginTop="16dp"
-        android:text="View Details" />
 
     <!-- Button to save recipe -->
-    <Button
-        android:id="@+id/button_save_recipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_recipe_description"
-        android:layout_toEndOf="@id/button_view_details"
-        android:layout_marginTop="16dp"
-        android:text="Save" />
 
     <!-- Button to delete recipe -->
+
+    <!-- RecyclerView to display saved recipes -->
+
     <Button
-        android:id="@+id/button_delete_recipe"
+        android:id="@+id/button_detele"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_recipe_description"
-        android:layout_toEndOf="@id/button_save_recipe"
-        android:layout_marginTop="16dp"
-        android:text="Delete" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="delete" />
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/saved_recipes_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_marginTop="16dp"
+        android:scrollbars="vertical" />
+
+</FrameLayout>

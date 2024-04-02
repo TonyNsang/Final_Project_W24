@@ -1,12 +1,13 @@
 package algonquin.cst2335.final_project_w24.Recipe;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.squareup.picasso.Picasso;
 
 import algonquin.cst2335.final_project_w24.R;
@@ -30,14 +31,24 @@ public class RecipeDetailActivity extends AppCompatActivity {
         summaryTextView = findViewById(R.id.recipeSummaryTextView);
         sourceUrlTextView = findViewById(R.id.recipeSourceUrlTextView);
 
-        // Retrieve the recipe ID passed from RecipeActivity
         int recipeId = getIntent().getIntExtra("RECIPE_ID", -1);
         if (recipeId != -1) {
             fetchRecipeDetails(recipeId);
         } else {
             Toast.makeText(this, "Invalid recipe ID.", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity if the ID is invalid
+            finish();
         }
+
+        Button button_save_recipe = findViewById(R.id.button_save_recipe);
+        button_save_recipe.setOnClickListener(v -> {
+            saveRecipeDetails();
+        });
+
+        Button button_favorite = findViewById(R.id.button_favorite);
+        button_favorite.setOnClickListener(v -> {
+            saveRecipeDetails();
+            navigateToSavedRecipes();
+        });
     }
 
     private void fetchRecipeDetails(int recipeId) {
@@ -45,12 +56,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         manager.getRecipeDetails(recipeId, new RecipeDetailResponseListener() {
             @Override
             public void didFetch(DetailRecipeApiResponse response, String message) {
-                // Set the title, summary, and source URL
                 titleTextView.setText(response.getTitle());
                 summaryTextView.setText(android.text.Html.fromHtml(response.getSummary()).toString());
                 sourceUrlTextView.setText(response.getSourceUrl());
-
-                // Use Picasso to load the image into the ImageView
                 Picasso.get().load(response.getImage()).into(recipeImageView);
             }
 
@@ -60,4 +68,36 @@ public class RecipeDetailActivity extends AppCompatActivity {
             }
         });
     }
-}
+
+
+    private void saveRecipeDetails() {
+        String title = titleTextView.getText().toString();
+        String summary = summaryTextView.getText().toString();
+        String sourceUrl = sourceUrlTextView.getText().toString();
+
+        // Generate a unique key for the recipe. For simplicity, using the title here but it should be unique.
+        String uniqueKey = title + "_" + System.currentTimeMillis();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("SavedRecipes", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        int recipeCount = sharedPreferences.getInt("RecipeCount", 0);
+        String recipeKey = "Recipe_" + recipeCount;
+        editor.putString(recipeKey, title + ";" + summary + ";" + sourceUrl);
+        editor.putInt("RecipeCount", recipeCount + 1);
+        editor.apply();
+
+        Toast.makeText(this, "Recipe saved successfully", Toast.LENGTH_SHORT).show();
+
+        // Navigate to the list of saved recipes
+        navigateToSavedRecipes();
+
+    }
+
+    private void navigateToSavedRecipes() {
+        Intent intent = new Intent(RecipeDetailActivity.this, SavedRecipesActivity.class);
+        startActivity(intent);
+    }
+
+    }
+

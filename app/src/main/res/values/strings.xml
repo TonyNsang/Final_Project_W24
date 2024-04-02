@@ -13,4 +13,6 @@
     <string name="api_key" translatable="false">bc83891210b24f3cac52df066a0ca626</string>
     <string name="nutrition_info_not_available" translatable="false" />
     <string name="recipe_image" translatable="false" />
+    <string name="remove_recipe" />
+    <string name="save_recipe" />
 </resources>

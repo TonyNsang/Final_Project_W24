@@ -1,10 +1,8 @@
 package algonquin.cst2335.final_project_w24.Recipe.SearchAdapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,46 +11,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import algonquin.cst2335.final_project_w24.R;
-import algonquin.cst2335.final_project_w24.Recipe.Database.RecipeEntity;
+import algonquin.cst2335.final_project_w24.Recipe.SavedRecipe;
 
-public class SavedRecipesAdapter extends RecyclerView.Adapter<SavedRecipesAdapter.RecipeViewHolder> {
+public class SavedRecipesAdapter extends RecyclerView.Adapter<SavedRecipesAdapter.ViewHolder> {
 
-    private final List<RecipeEntity> savedRecipes;
-    private final Context context;
+    private List<SavedRecipe> savedRecipes;
+    private OnItemClickListener listener;
 
-    public SavedRecipesAdapter(List<RecipeEntity> savedRecipes, Context context) {
+    public SavedRecipesAdapter(List<SavedRecipe> savedRecipes, OnItemClickListener listener) {
         this.savedRecipes = savedRecipes;
-        this.context = context;
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(SavedRecipe savedRecipe);
     }
 
     @NonNull
     @Override
-    public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_recipe_item, parent, false);
-        return new RecipeViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        RecipeEntity recipe = savedRecipes.get(position);
-        holder.textViewRecipeName.setText(recipe.getTitle());
-        holder.textViewRecipeDescription.setText(recipe.getSummary());
-
-        holder.buttonViewDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle viewing details of the recipe
-                // You can implement this according to your application's logic
-            }
-        });
-
-        holder.buttonDeleteRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle deleting the recipe
-                // You can implement this according to your application's logic
-            }
-        });
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        SavedRecipe savedRecipe = savedRecipes.get(position);
+        holder.bind(savedRecipe, listener);
     }
 
     @Override
@@ -60,18 +45,26 @@ public class SavedRecipesAdapter extends RecyclerView.Adapter<SavedRecipesAdapte
         return savedRecipes.size();
     }
 
-    public class RecipeViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewRecipeName;
-        TextView textViewRecipeDescription;
-        Button buttonViewDetails;
-        Button buttonDeleteRecipe;
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public RecipeViewHolder(@NonNull View itemView) {
+        private TextView titleTextView;
+        private TextView summaryTextView;
+
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewRecipeName = itemView.findViewById(R.id.text_view_recipe_name);
-            textViewRecipeDescription = itemView.findViewById(R.id.text_view_recipe_description);
-            buttonViewDetails = itemView.findViewById(R.id.button_view_details);
-            buttonDeleteRecipe = itemView.findViewById(R.id.button_delete_recipe);
+            titleTextView = itemView.findViewById(R.id.text_view_recipe_name);
+            summaryTextView = itemView.findViewById(R.id.text_view_recipe_description);
+        }
+
+        void bind(final SavedRecipe savedRecipe, final OnItemClickListener listener) {
+            titleTextView.setText(savedRecipe.getTitle());
+            summaryTextView.setText(savedRecipe.getSummary());
+
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemClick(savedRecipe);
+                }
+            });
         }
     }
 }

@@ -13,4 +13,5 @@
     <item name="textView_title" type="id" />
     <item name="random_list_container" type="id" />
     <item name="textView_summary" type="id" />
+    <item name="text_view_recipe_source_url" type="id" />
 </resources>

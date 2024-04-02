@@ -93,6 +93,8 @@ dependencies {
             implementation ("com.github.bumptech.glide:glide:4.12.0")
             implementation ("androidx.room:room-runtime:$room_version")
             implementation ("androidx.room:room-ktx:$room_version")
+            implementation ("androidx.room:room-rxjava3:$room_version")
+            implementation ("androidx.room:room-guava:$room_version")
 
                 
 
