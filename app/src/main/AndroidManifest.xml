@@ -35,7 +35,7 @@
 
         <activity 
                   android:name=".Dictionary.DictionaryActivity"
-            android:exported="false"/>
+            android:exported="true"/>
             <!-- intent-filter and other configurations -->
 
         <activity android:name=".SunApp.SunActivity">
