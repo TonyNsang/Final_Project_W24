@@ -14,8 +14,8 @@ public interface FavoriteLocationDAO {
     List<FavoriteLocation> getAll();
 
     @Insert
-    void insert(FavoriteLocation favoriteLocation);
+    void insert(FavoriteLocation location);
 
     @Delete
-    void delete(FavoriteLocation favoriteLocation);
+    void delete(FavoriteLocation location);
 }

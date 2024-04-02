@@ -1,5 +1,5 @@
 package algonquin.cst2335.final_project_w24.SunApp;
-
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -9,10 +9,15 @@ public class FavoriteLocation {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private double latitude;
-    private double longitude;
+    @ColumnInfo(name = "latitude")
+    private String latitude;
 
-    public FavoriteLocation(double latitude, double longitude) {
+    @ColumnInfo(name = "longitude")
+    private String longitude;
+
+    // Constructor, getters, and setters
+    // Constructor, getters, and setters
+    public FavoriteLocation(String latitude, String longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -25,19 +30,19 @@ public class FavoriteLocation {
         this.id = id;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 }

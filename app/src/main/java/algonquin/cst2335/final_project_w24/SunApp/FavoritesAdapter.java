@@ -1,5 +1,4 @@
 package algonquin.cst2335.final_project_w24.SunApp;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,42 +7,49 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import algonquin.cst2335.final_project_w24.R;
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
+public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.LocationViewHolder> {
 
-    private List<FavoriteLocation> favoriteLocations;
-
-    public FavoritesAdapter(List<FavoriteLocation> favoriteLocations) {
-        this.favoriteLocations = favoriteLocations;
-    }
+    private List<FavoriteLocation> locations = new ArrayList<>();
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_favorite_location, parent, false);
-        return new ViewHolder(view);
+    public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_favorite_location, parent, false);
+        return new LocationViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FavoriteLocation location = favoriteLocations.get(position);
-        holder.textViewFavoriteLocation.setText("Latitude: " + location.getLatitude() + ", Longitude: " + location.getLongitude());
+    public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
+        FavoriteLocation location = locations.get(position);
+        holder.latitudeTextView.setText(location.getLatitude());
+        holder.longitudeTextView.setText(location.getLongitude());
     }
 
     @Override
     public int getItemCount() {
-        return favoriteLocations.size();
+        return locations.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewFavoriteLocation;
+    public void setLocations(List<FavoriteLocation> locations) {
+        this.locations = locations;
+        notifyDataSetChanged();
+    }
 
-        public ViewHolder(@NonNull View itemView) {
+    class LocationViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView latitudeTextView;
+        private TextView longitudeTextView;
+
+        public LocationViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewFavoriteLocation = itemView.findViewById(R.id.textViewFavoriteLocation);
+            latitudeTextView = itemView.findViewById(R.id.latitudeTextView);
+            longitudeTextView = itemView.findViewById(R.id.longitudeTextView);
         }
     }
 }
