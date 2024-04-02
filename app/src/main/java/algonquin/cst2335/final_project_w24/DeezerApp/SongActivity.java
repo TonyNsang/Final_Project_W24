@@ -1,5 +1,6 @@
 package algonquin.cst2335.final_project_w24.DeezerApp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -31,6 +33,7 @@ public class SongActivity extends AppCompatActivity {
     private EditText artistNameEditText;
     private Button searchButton;
     private Button favoriteButton1;
+    private Button helpBtn;
     private RecyclerView songsRecyclerView;
     private SongsAdapter songsAdapter;
     private  ConstraintLayout layout;
@@ -52,6 +55,7 @@ public class SongActivity extends AppCompatActivity {
         searchButton = findViewById(R.id.searchButton);
         songsRecyclerView = findViewById(R.id.songsRecyclerView);
         favoriteButton1 = findViewById(R.id.favorite_btn1);
+        helpBtn = findViewById(R.id.help_btn);
 
         // Setup RecyclerView
         songsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,9 +73,15 @@ public class SongActivity extends AppCompatActivity {
         songsRecyclerView.setAdapter(songsAdapter);
 
 
+
+
+
         searchButton.setOnClickListener(v -> {
             String artistName = artistNameEditText.getText().toString().trim();
-            if (!artistName.isEmpty()) {
+            if (artistName.isEmpty()) {
+                // Showing a Snackbar message if the input is empty
+                Snackbar.make(v, "Please enter an artist name to search", Snackbar.LENGTH_LONG).show();
+            } else {
                 // Clear existing data
                 songList.clear();
                 songsAdapter.notifyDataSetChanged();
@@ -89,6 +99,19 @@ public class SongActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Set the OnClickListener for the help button
+        helpBtn.setOnClickListener(v -> showHelpDialog());
+
+
+    }
+
+    // help AlertDialog
+    private void showHelpDialog() {
+        AlertDialog.Builder helpDialog = new AlertDialog.Builder(this);
+        helpDialog.setTitle("Help"); // Set the title of the AlertDialog
+        helpDialog.setMessage("Enter the name of an artist to search for their top tracks. You can view details of a song by clicking on it, and you can add songs to your favorites by clicking on 'Save Song' in the song details view.");
+        helpDialog.setPositiveButton("OK", (dialog, which) -> dialog.dismiss()); // Set a button to close the dialog
+        helpDialog.show(); // Show the AlertDialog
     }
 
     private void searchForArtistAndFetchTopTracks(String artistName) {
