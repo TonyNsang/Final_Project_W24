@@ -48,6 +48,7 @@ public class FavoritesActivity extends AppCompatActivity {
             intent.putExtra("duration", trackFavoriteDetails.getDuration());
             intent.putExtra("coverImage", trackFavoriteDetails.getAlbumCoverUrl());
             startActivity(intent);
+
         });
         favoritesRecyclerView.setAdapter(favoritesAdapter);
         loadFavorites();
