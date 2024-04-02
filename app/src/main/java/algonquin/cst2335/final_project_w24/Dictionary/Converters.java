@@ -1,7 +1,12 @@
 package algonquin.cst2335.final_project_w24.Dictionary;
 import androidx.room.TypeConverter;
 import java.util.ArrayList;
-
+/**
+ * purpose of the file: Specifies how Room should convert my custom data type (ArrayList<String>) to a type that can be stored in the database.
+ * author: Tony Nsang
+ * lab section: 022
+ * creation date: March 28, 2023.
+ */
 /**
  * Specifies how Room should convert my custom data type (ArrayList<String>) to a type that can be stored in the database.
  */

@@ -23,7 +23,13 @@ import java.util.concurrent.Executors;
 
 import algonquin.cst2335.final_project_w24.R;
 
-public class SavedWordsActivity extends AppCompatActivity {
+/**
+ * purpose of the file: SavedDefinitionsActivity shows the definitions of the saved word where the user can delete a definition
+ * @author Tony Nsang
+ * lab section: 022
+ * creation date: March 28, 2023.
+ */
+public class SavedDefinitionsActivity extends AppCompatActivity {
     /**
      * RecycleView Adapter
      */
@@ -38,13 +44,22 @@ public class SavedWordsActivity extends AppCompatActivity {
      * DAO for DictionaryDatabase
      */
     DictionaryDAO mDAO;
-
+    /**
+     * Search Term from DictionaryActivity
+     */
     String selectedWord;
 
+    /**
+     * On Create Method to Load the SavedDefinitionsActivity
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_words);
+        setContentView(R.layout.activity_saved_definitions);
 
         selectedWord = getIntent().getStringExtra("selected_word");
         ArrayList<String> definitions = getIntent().getStringArrayListExtra("definitions");
@@ -131,6 +146,11 @@ public class SavedWordsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method that shows an AlertDialog to confirm a deletion of a particular definition
+     * @param definition definition being deleted
+     * @param position the position of the definition in the recycleview
+     */
     private void confirmDeleteDefinition(String definition, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Delete");
@@ -153,6 +173,11 @@ public class SavedWordsActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    /**
+     * Method to show a SnackBar to display deletion message and the option to undo the deletion
+     * @param deletedDefinition deleted definition
+     * @param position position of the deleted definition in the ArrayList of definitions
+     */
     private void showUndoSnackbar(String deletedDefinition, int position) {
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
                 "Definition deleted", Snackbar.LENGTH_LONG);
