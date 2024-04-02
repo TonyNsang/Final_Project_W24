@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Converters {
     @TypeConverter
     public static ArrayList<String> fromString(String value) {
-        // Split the string by comma to convert it back to ArrayList<String>
+        // Split the string by 1 to convert it back to ArrayList<String>
         String[] array = value.split("1");
         ArrayList<String> arrayList = new ArrayList<>();
         for (String item : array) {
@@ -24,7 +24,7 @@ public class Converters {
 
     @TypeConverter
     public static String fromArrayList(ArrayList<String> list) {
-        // Convert ArrayList<String> to comma-separated String
+        // Convert ArrayList<String> to 1-separated String
         StringBuilder value = new StringBuilder();
         for (String item : list) {
             value.append(item);

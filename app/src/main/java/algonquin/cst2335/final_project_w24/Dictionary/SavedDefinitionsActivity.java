@@ -75,12 +75,13 @@ public class SavedDefinitionsActivity extends AppCompatActivity {
 
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
+            DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "dictionary-database").build();
             mDAO = db.stDAO();
 
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
                         data = mDAO.getWordBySearchTerm(selectedWord);
+
                     });
         recyclerView.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder2>() {
             /**
