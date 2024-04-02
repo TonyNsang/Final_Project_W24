@@ -11,4 +11,11 @@
     <string name="search_hint" />
     <string name="search_button" />
     <string name="spoonacular_api_key" />
+    <string name="sunrise_sunset">Sunrise: ---- Sunset: ----</string>
+    <string name="delete">Delete</string>
+    <string name="save_location">Save Location</string>
+    <string name="favorites">Favorites</string>
+    <string name="lookup">Lookup</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
 </resources>

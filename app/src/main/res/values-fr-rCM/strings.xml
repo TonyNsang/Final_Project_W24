@@ -9,4 +9,10 @@
     <string name="app4_name">Deezer Son</string>
     <string name="introduce_message">Bienvenue! Veuillez choisir votre point d\'action</string>
     <string name="error_msg">Erreur lors de la récupération des définitions</string>
+    <string name="sunrise_sunset">Sunrise: ---- Sunset: ----</string>
+    <string name="delete">Delete</string>
+    <string name="save_location">Save Location</string>
+    <string name="favorites">Favorites</string>
+    <string name="lookup">Lookup</string>
+    <string name="latitude">Latitude</string>
 </resources>
