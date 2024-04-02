@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- TextViews for displaying recipe details -->
+    <TextView
+        android:id="@+id/text_view_recipe_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_view_recipe_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_recipe_name"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp" />
+
+    <!-- Button to view details -->
+    <Button
+        android:id="@+id/button_view_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_recipe_description"
+        android:layout_marginTop="16dp"
+        android:text="View Details" />
+
+    <!-- Button to save recipe -->
+    <Button
+        android:id="@+id/button_save_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_recipe_description"
+        android:layout_toEndOf="@id/button_view_details"
+        android:layout_marginTop="16dp"
+        android:text="Save" />
+
+    <!-- Button to delete recipe -->
+    <Button
+        android:id="@+id/button_delete_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_recipe_description"
+        android:layout_toEndOf="@id/button_save_recipe"
+        android:layout_marginTop="16dp"
+        android:text="Delete" />
+
+</RelativeLayout>
