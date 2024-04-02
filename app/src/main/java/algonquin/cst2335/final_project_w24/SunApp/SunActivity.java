@@ -1,5 +1,7 @@
 package algonquin.cst2335.final_project_w24.SunApp;
+
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,6 +34,8 @@ public class SunActivity extends AppCompatActivity {
     private EditText latitudeEditText;
     private EditText longitudeEditText;
     private Button lookupButton;
+
+    private Button favoriteButton;
     private TextView resultTextView;
 
     private static final String SUNRISE_SUNSET_API_URL = "https://api.sunrise-sunset.org/json?";
@@ -38,6 +43,7 @@ public class SunActivity extends AppCompatActivity {
 
     private RequestQueue requestQueue;
     private SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public class SunActivity extends AppCompatActivity {
         latitudeEditText = findViewById(R.id.editTextLatitude);
         longitudeEditText = findViewById(R.id.editTextLongitude);
         lookupButton = findViewById(R.id.buttonLookup);
+        favoriteButton = findViewById(R.id.buttonFavorites);
         resultTextView = findViewById(R.id.textViewResults);
 
         requestQueue = Volley.newRequestQueue(this);
@@ -57,6 +64,15 @@ public class SunActivity extends AppCompatActivity {
         String previousLongitude = sharedPreferences.getString("longitude", "");
         latitudeEditText.setText(previousLatitude);
         longitudeEditText.setText(previousLongitude);
+
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to FavoriteLocationsActivity
+                Intent favoriteLocation = new Intent(SunActivity.this, FavoriteLocationsActivity.class);
+                startActivity(favoriteLocation);
+            }
+        });
 
         lookupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +93,42 @@ public class SunActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button saveLocationButton = findViewById(R.id.buttonSaveLocation);
+        saveLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String latitude = latitudeEditText.getText().toString();
+                String longitude = longitudeEditText.getText().toString();
+
+                if (latitude.isEmpty() || longitude.isEmpty()) {
+                    Toast.makeText(SunActivity.this, "Please search for a location first", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Save the location to favorites
+                    FavoriteLocation favoriteLocation = new FavoriteLocation(latitude, longitude);
+                    saveFavoriteLocation(favoriteLocation);
+
+                    Toast.makeText(SunActivity.this, "Location saved to favorites", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
+    private void saveFavoriteLocation(FavoriteLocation favoriteLocation) {
+        // Access the database using Room
+        FavoriteLocationDatabase database = Room.databaseBuilder(getApplicationContext(),
+                FavoriteLocationDatabase.class, "favorite_locations_database").build();
+
+        // Insert the favorite location into the database
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                database.lDAO().insert(favoriteLocation);
+            }
+        }).start();
+    }
+
+
 
     private void fetchSunriseSunset(String latitude, String longitude) {
         String url = SUNRISE_SUNSET_API_URL + "lat=" + latitude + "&lng=" + longitude + "&timezone=" + TIMEZONE;

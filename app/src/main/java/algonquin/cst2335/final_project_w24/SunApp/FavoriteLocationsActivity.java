@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import java.util.List;
 
@@ -26,11 +27,33 @@ public class FavoriteLocationsActivity extends AppCompatActivity {
         adapter = new FavoritesAdapter();
         recyclerView.setAdapter(adapter);
 
+        // Load favorite locations asynchronously
         loadFavoriteLocations();
     }
 
     private void loadFavoriteLocations() {
-        List<FavoriteLocation> locations = FavoriteLocationDatabase.getInstance(this).favoriteLocationDao().getAll();
-        adapter.setLocations(locations);
+        // Use Kotlin coroutines to perform database operation off the main thread
+        // This prevents database operations from blocking the UI
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Access the database using Room
+                FavoriteLocationDatabase database = Room.databaseBuilder(getApplicationContext(),
+                        FavoriteLocationDatabase.class, "favorite_locations_database").build();
+
+                // Retrieve favorite locations from the database
+                List<FavoriteLocation> favoriteLocations = database.lDAO().getAll();
+
+                // Update the adapter with the retrieved favorite locations
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setLocations(favoriteLocations);
+                    }
+                });
+            }
+        }).start();
     }
+
+
 }
