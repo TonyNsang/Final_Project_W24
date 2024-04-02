@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">Final_Project_W24</string>
     <string name="search">SEARCH</string>
-    <string name="save">Saved Items</string>
+    <string name="saveItems">Saved Items</string>
     <string name="app1_name">Sun App</string>
     <string name="app2_name">Food Recipe</string>
     <string name="app3_name">Dictionary</string>
     <string name="app4_name">Deezer Song</string>
     <string name="introduce_message">WELCOME! \n Please choose your point of action</string>
     <string name="error_msg">Error fetching definitions</string>
+
     <string name="search_hint" />
     <string name="search_button" />
     <string name="spoonacular_api_key" />
@@ -22,4 +23,16 @@
     <string name="error_occurred">"Error occurred: "</string>
     <string name="sunrise">"Sunrise: "</string>
     <string name="sunset">" - Sunset: "</string>
+
+
+    <string name="enter_artist_name">Enter Artist Name</string>
+    <string name="search_hint">Search Hint</string>
+    <string name="search_button">Search Button</string>
+    <string name="spoonacular_api_key">Spoonacular_api_key</string>
+
+    <string name="save">Save</string>
+    <string name="deleteDefinition">Delete</string>
+
+
+
 </resources>
