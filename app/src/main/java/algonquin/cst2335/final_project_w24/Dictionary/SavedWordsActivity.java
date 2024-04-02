@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -89,12 +91,12 @@ public class SavedWordsActivity extends AppCompatActivity {
             @Override
             public void onBindViewHolder(@NonNull MyRowHolder2 holder, int position) {
                 // Bind data to views
-                String definition = data.getDefinitionsOfTerm().get(position);
+                String definition = definitions.get(position);
                 holder.definitionText.setText(definition);
 
                 // On click listener to delete button
                 holder.deleteButton.setOnClickListener(v -> {
-                    confirmDeleteDefinition(definition);
+                    confirmDeleteDefinition(definition, position);
                 });
             }
 
@@ -129,24 +131,37 @@ public class SavedWordsActivity extends AppCompatActivity {
         }
     }
 
-    private void confirmDeleteDefinition(String definition) {
+    private void confirmDeleteDefinition(String definition, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Confirm Delete");
         builder.setMessage("Are you sure you want to delete this definition?");
         builder.setPositiveButton("Yes", (dialog, cl) -> {
-            // Delete the definition from the database
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
                 mDAO.deleteDefinition(selectedWord, definition);
                 runOnUiThread(() -> {
-                    Toast.makeText(this, "Definition deleted", Toast.LENGTH_SHORT).show();
-                    // Remove the deleted definition from the list and notify adapter
-                    data.getDefinitionsOfTerm().remove(definition);
-                    myAdapter.notifyDataSetChanged();
+                    // Remove the deleted definition from the list
+                   String removed =  data.getDefinitionsOfTerm().remove(position);
+                    // Notify adapter about the deletion
+                    myAdapter.notifyItemRemoved(position);
+                    // Show Snackbar for undo option
+                    showUndoSnackbar(removed, position);
                 });
             });
         });
         builder.setNegativeButton("No", null);
         builder.create().show();
+    }
+
+    private void showUndoSnackbar(String deletedDefinition, int position) {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content),
+                "Definition deleted", Snackbar.LENGTH_LONG);
+        snackbar.setAction("UNDO", v -> {
+            // Add the deleted definition back to the list
+            data.getDefinitionsOfTerm().add(position, deletedDefinition);
+            // Notify adapter about the addition
+            myAdapter.notifyItemInserted(position);
+        });
+        snackbar.show();
     }
 }

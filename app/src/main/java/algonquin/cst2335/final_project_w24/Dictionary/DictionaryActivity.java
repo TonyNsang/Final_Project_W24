@@ -115,6 +115,8 @@ public class DictionaryActivity extends AppCompatActivity {
         DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
         mDAO = db.stDAO();
 
+
+
         //Shared Preferences for Search Term in edit text
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         String lastSearchTerm = prefs.getString("last_search_term", "");
@@ -169,10 +171,6 @@ public class DictionaryActivity extends AppCompatActivity {
                             DictionaryData haha = mDAO.getWordBySearchTerm(selectedTerm);
                             ArrayList<String> selectedDefinitions = haha.getDefinitionsOfTerm();
                             ArrayList<String> definitions = selectedDefinitions;
-//                            ArrayList<String> definitions = new ArrayList<>();
-//                            for (ArrayList  : definitions) {
-//                                definitions.add(selectedDefinitions);
-//                            }
 
                             // Start SavedWordsActivity with selected word and definitions
                             Intent intent = new Intent(DictionaryActivity.this, SavedWordsActivity.class);
