@@ -43,6 +43,12 @@
             <!-- intent-filter and other configurations -->
         </activity>
 
+        <activity android:name=".SunApp.FavoriteLocationsActivity">
+
+            <!-- intent-filter and other configurations -->
+        </activity>
+
+
 
        <activity
            android:name=".DeezerApp.SongActivity">

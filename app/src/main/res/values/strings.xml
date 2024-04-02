@@ -9,6 +9,22 @@
     <string name="introduce_message">WELCOME! \n Please choose your point of action</string>
     <string name="error_msg">Error fetching definitions</string>
 
+    <string name="search_hint" />
+    <string name="search_button" />
+    <string name="spoonacular_api_key" />
+    <string name="sunrise_sunset">Sunrise: ---- Sunset: ----</string>
+    <string name="delete">Delete</string>
+    <string name="save_location">Save Location</string>
+    <string name="favorites">Favorites</string>
+    <string name="lookup">Lookup</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="please_enter_latitude_and_longitude">Please enter latitude and longitude.</string>
+    <string name="error_occurred">"Error occurred: "</string>
+    <string name="sunrise">"Sunrise: "</string>
+    <string name="sunset">" - Sunset: "</string>
+
+
     <string name="enter_artist_name">Enter Artist Name</string>
     <string name="search_hint">Search Hint</string>
     <string name="search_button">Search Button</string>
@@ -16,6 +32,7 @@
 
     <string name="save">Save</string>
     <string name="deleteDefinition">Delete</string>
+
 
 
 </resources>
