@@ -6,7 +6,13 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
-
+/**
+ * purpose of the file: Object class to model the words and its definitions
+ * Represents a Table in the Database to store the words and its definitions
+ * author: Tony Nsang
+ * lab section: 022
+ * creation date: March 23, 2023.
+ */
 /**
  * Object class to model the words and its definitions
  * Represents a Table in the Database to store the words and its definitions

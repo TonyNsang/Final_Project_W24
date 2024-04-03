@@ -7,7 +7,13 @@ import androidx.room.Query;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * purpose of the file: DAO to take care of inserting, updating, creating and deleting.
+ * Data Access Object, which is responsible for running the sql commands
+ * author: Tony Nsang
+ * lab section: 022
+ * creation date: March 23, 2023.
+ */
 /**
  * DAO to take care of inserting, updating, creating and deleting.
  * Data Access Object, which is responsible for running the sql commands

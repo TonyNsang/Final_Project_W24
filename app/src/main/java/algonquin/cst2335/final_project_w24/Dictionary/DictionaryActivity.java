@@ -37,11 +37,17 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import algonquin.cst2335.final_project_w24.DeezerApp.SongActivity;
-import algonquin.cst2335.final_project_w24.MainActivity;
 import algonquin.cst2335.final_project_w24.R;
 import algonquin.cst2335.final_project_w24.Recipe.RecipeActivity;
 import algonquin.cst2335.final_project_w24.SunApp.SunActivity;
 import algonquin.cst2335.final_project_w24.databinding.ActivityDictionaryBinding;
+/**
+ * purpose of the file: This class runs the Dictionary Application where a word is entered and on click of search
+ * It redirects the user to an API and retrieves the matching definitions of that word
+ * author: Tony Nsang
+ * lab section: 022
+ * creation date: March 23, 2023.
+ */
 
 /**
  * This class runs the Dictionary Application where a word is entered and on click of search
@@ -67,7 +73,11 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Array to store definitions of a word
      */
+
+    private final ArrayList<String> definitions = new ArrayList<>();
+
     private ArrayList<DictionaryData> wordAndDefinitions = new ArrayList<>();
+
     /**
      * RecycleView Adapter
      */
@@ -112,8 +122,10 @@ public class DictionaryActivity extends AppCompatActivity {
         binding.dictionaryView.setLayoutManager(new LinearLayoutManager(this));
 
         //Open the Database
-        DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
+        DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "dictionary-database").build();
         mDAO = db.stDAO();
+
+
 
         //Shared Preferences for Search Term in edit text
         SharedPreferences prefs = getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
@@ -147,7 +159,7 @@ public class DictionaryActivity extends AppCompatActivity {
             }
         });
 
-
+        //Saved Items on click listener
         binding.savedButton.setOnClickListener(click -> {
             Executor thread = Executors.newSingleThreadExecutor();
             thread.execute(() -> {
@@ -166,14 +178,12 @@ public class DictionaryActivity extends AppCompatActivity {
                         Executor fetchThread = Executors.newSingleThreadExecutor();
                         fetchThread.execute(() -> {
                             // Retrieve definitions for the selected term
-                            List<DictionaryData> selectedDefinitions = mDAO.getAllWordsWithSearchTerm(selectedTerm);
-                            ArrayList<String> definitions = new ArrayList<>();
-                            for (DictionaryData data : selectedDefinitions) {
-                                definitions.addAll(data.getDefinitionsOfTerm());
-                            }
+                            DictionaryData haha = mDAO.getWordBySearchTerm(selectedTerm);
+                            ArrayList<String> selectedDefinitions = haha.getDefinitionsOfTerm();
+                            ArrayList<String> definitions = selectedDefinitions;
 
                             // Start SavedWordsActivity with selected word and definitions
-                            Intent intent = new Intent(DictionaryActivity.this, SavedWordsActivity.class);
+                            Intent intent = new Intent(DictionaryActivity.this, SavedDefinitionsActivity.class);
                             intent.putExtra("selected_word", selectedTerm);
                             intent.putStringArrayListExtra("definitions", definitions);
                             startActivity(intent);
@@ -268,7 +278,7 @@ public class DictionaryActivity extends AppCompatActivity {
                                 }
                             }
 
-                            // Create a DictionaryData object and add it to the list
+                            // INITIALIZE the DictionaryData object and add it to the list
                             data = new DictionaryData();
                             data.setSearchTerm(searchTerm);
                             data.setDefinitionsOfTerm(definitions);
@@ -324,7 +334,9 @@ public class DictionaryActivity extends AppCompatActivity {
         return formattedDefinitions.toString();
     }
 
-    //Toolbar Menu items
+    /**
+     * Load Toolbar Menu items
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_menu, menu);
@@ -332,6 +344,12 @@ public class DictionaryActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Select actions for each menu item
+     * @param item The menu item that was selected.
+     *
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.dictionaryIcon) {
