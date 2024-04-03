@@ -22,6 +22,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -44,11 +45,14 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.activity:activity:1.8.0")
 
+<<<<<<< HEAD
+=======
     implementation("com.google.android.gms:play-services-basement:18.3.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+>>>>>>> origin/TestBranch
 
     //Volley Library - Tony
     implementation("com.android.volley:volley:1.2.1")
@@ -90,7 +94,15 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.0")
     // Gson for JSON parsing
     implementation ("com.google.code.gson:gson:2.10.1")
-    implementation ("com.google.code.gson:gson:2.8.8")
+
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation ("androidx.test:core:1.4.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
+
+
+
+
 
 
 

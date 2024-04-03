@@ -21,10 +21,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
     private List<TrackFavoriteDetails> favoritesList;
     private OnDeleteListener deleteListener;
+    private OnItemClickListener onItemClickListener;
 
-    public FavoritesAdapter(List<TrackFavoriteDetails> favoritesList, OnDeleteListener deleteListener) {
+
+    public FavoritesAdapter(List<TrackFavoriteDetails> favoritesList, OnDeleteListener deleteListener, OnItemClickListener onItemClickListener) {
         this.favoritesList = favoritesList;
         this.deleteListener = deleteListener;
+        this.onItemClickListener = onItemClickListener;
     }
 
     public void setFavoritesList(List<TrackFavoriteDetails> favoritesList) {
@@ -54,6 +57,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         holder.deleteButton.setOnClickListener(v -> {
             deleteListener.onDelete(position);
         });
+
+        holder.itemView.setOnClickListener(v -> {
+            if(onItemClickListener != null) {
+                onItemClickListener.onItemClick(favorite);
+            }
+        });
     }
 
     @Override
@@ -81,5 +90,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     }
     public TrackFavoriteDetails getItem(int position) {
         return favoritesList.get(position);
+    }
+
+
+    // Interface for click events
+    public interface OnItemClickListener {
+        void onItemClick(TrackFavoriteDetails trackFavoriteDetails);
     }
 }
