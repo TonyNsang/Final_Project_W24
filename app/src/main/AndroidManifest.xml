@@ -22,11 +22,11 @@
             android:name=".Recipe.RecipeDetailActivity" />
         <activity android:name=".Recipe.SavedRecipesActivity" />
 
+
+
         <activity
-            android:name=".Recipe.RecipeActivity" />
-
-
-
+            android:name=".Recipe.RecipeActivity"
+          </activity>
 
 
         <activity
@@ -43,7 +43,7 @@
 
         <activity android:name=".DeezerApp.SongDetailsActivity">
         </activity>
-
+        <!-- Add DictionaryActivity declaration -->
         <activity 
                   android:name=".Dictionary.DictionaryActivity"
             android:exported="true"/>
