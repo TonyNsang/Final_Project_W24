@@ -28,7 +28,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
-        android:text="@string/delete"
+        android:text="@string/sun_delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonLookup" />
 
