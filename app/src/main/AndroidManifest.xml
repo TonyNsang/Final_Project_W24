@@ -23,10 +23,11 @@
         <activity android:name=".Recipe.SavedRecipesActivity" />
 
 
+
         <activity
             android:name=".Recipe.RecipeActivity"
+          </activity>
 
-            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

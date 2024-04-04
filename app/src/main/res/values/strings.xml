@@ -9,22 +9,33 @@
     <string name="introduce_message">WELCOME! \n Please choose your point of action</string>
     <string name="error_msg">Error fetching definitions</string>
 
+
+    <string name="food_search_hint" translatable="false" >hint </string>
+    <string name="food_search_button" translatable="false" />
+
     <string name="search_hint2" translatable="false" />
     <string name="search_button" translatable="false" />
+
     <string name="api_key" translatable="false">bc83891210b24f3cac52df066a0ca626</string>
     <string name="nutrition_info_not_available" translatable="false" />
     <string name="recipe_image" translatable="false" />
-    <string name="remove_recipe" />
-    <string name="save_recipe" />
+    <string name="remove_recipe"></string>
+    <string name="save_recipe" ></string>
 
+
+
+    <string name="sun_search_hint" />
+    <string name="sun_search_button" />
+    <string name="sun_spoonacular_api_key" />
 
 <!--    <string name="search_hint" />-->
     <string name="search_button2" />
 <!--    <string name="spoonacular_api_key" />-->
+
     <string name="sunrise_sunset">Sunrise: ---- Sunset: ----</string>
-    <string name="delete">Delete</string>
+    <string name="sun_delete">Delete</string>
     <string name="save_location">Save Location</string>
-    <string name="favorites">Favorites</string>
+    <string name="sun_favorites">Favorites</string>
     <string name="lookup">Lookup</string>
     <string name="longitude">Longitude</string>
     <string name="latitude">Latitude</string>
