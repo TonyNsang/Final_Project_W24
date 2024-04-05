@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".DeezerApp.SongDetailsActivity">
 
+    <Button
+        android:id="@+id/main_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="#141B1C"
+        android:text="Home"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.176"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/albumCoverImageView"
         android:layout_width="300dp"

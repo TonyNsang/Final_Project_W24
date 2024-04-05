@@ -36,7 +36,7 @@ public class SongDetailsActivity extends AppCompatActivity {
 
 
         Button favoriteBtn = findViewById(R.id.favorite_btn);
-
+        Button mainBtn = findViewById(R.id.main_btn);
 
         // Retrieve data from intent
         Intent intent = getIntent();
@@ -98,6 +98,14 @@ public class SongDetailsActivity extends AppCompatActivity {
 
 
 //
+        mainBtn.setOnClickListener(v -> {
+            // Intent to start SongActivity
+            Intent intentMain = new Intent(SongDetailsActivity.this, SongActivity.class);
+            // Optionally, clear the activity stack to make SongActivity the top activity
+            intentMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intentMain);
+            // Optionally, add finish() here if you want SongDetailsActivity to close upon navigating back
+        });
 
 
     }

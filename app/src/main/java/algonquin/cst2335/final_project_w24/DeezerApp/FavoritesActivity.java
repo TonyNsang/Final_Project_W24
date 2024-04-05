@@ -1,5 +1,6 @@
 package algonquin.cst2335.final_project_w24.DeezerApp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -36,9 +37,20 @@ public class FavoritesActivity extends AppCompatActivity {
 
         favoritesRecyclerView = findViewById(R.id.favoritesRecyclerView);
         favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        favoritesAdapter = new FavoritesAdapter(favoriteList, this::deleteFavorite);
+//        favoritesAdapter = new FavoritesAdapter(favoriteList, this::deleteFavorite);
         favoritesRecyclerView.setAdapter(favoritesAdapter);
 
+        favoritesAdapter = new FavoritesAdapter(favoriteList, this::deleteFavorite, trackFavoriteDetails -> {
+            Intent intent = new Intent(FavoritesActivity.this, SongDetailsActivity.class);
+            // Pass the details of the selected favorite song to SongDetailsActivity
+            intent.putExtra("songTitle", trackFavoriteDetails.getSongTitle());
+            intent.putExtra("albumTitle", trackFavoriteDetails.getAlbumName());
+            intent.putExtra("duration", trackFavoriteDetails.getDuration());
+            intent.putExtra("coverImage", trackFavoriteDetails.getAlbumCoverUrl());
+            startActivity(intent);
+
+        });
+        favoritesRecyclerView.setAdapter(favoritesAdapter);
         loadFavorites();
     }
 

@@ -73,7 +73,11 @@ public class DictionaryActivity extends AppCompatActivity {
     /**
      * Array to store definitions of a word
      */
+
+    private final ArrayList<String> definitions = new ArrayList<>();
+
     private ArrayList<DictionaryData> wordAndDefinitions = new ArrayList<>();
+
     /**
      * RecycleView Adapter
      */
@@ -118,7 +122,7 @@ public class DictionaryActivity extends AppCompatActivity {
         binding.dictionaryView.setLayoutManager(new LinearLayoutManager(this));
 
         //Open the Database
-        DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "database-name").build();
+        DictionaryDatabase db = Room.databaseBuilder(getApplicationContext(), DictionaryDatabase.class, "dictionary-database").build();
         mDAO = db.stDAO();
 
 
@@ -274,7 +278,7 @@ public class DictionaryActivity extends AppCompatActivity {
                                 }
                             }
 
-                            // Create a DictionaryData object and add it to the list
+                            // INITIALIZE the DictionaryData object and add it to the list
                             data = new DictionaryData();
                             data.setSearchTerm(searchTerm);
                             data.setDefinitionsOfTerm(definitions);

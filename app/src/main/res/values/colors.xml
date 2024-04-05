@@ -3,5 +3,10 @@
     <color name="blue">#1730BD</color>
     <color name="white">#FFFFFFFF</color>
     <color name="brown">#8E5605</color>
-    <color name="purple">#966AE4</color>
+    <color name="light">#54E7EDF1</color>
+    <color name="lighpink">#EDA7BF</color>
+    <color name="lighorange">#DAA9A6</color>
+    <color name="black">#000000</color>
+    <color name="lightblue">#A4B5D2EA</color>
+    <color name="purple">#A4b</color>
 </resources>
